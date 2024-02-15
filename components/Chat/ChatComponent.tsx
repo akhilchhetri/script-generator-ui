@@ -23,16 +23,31 @@ const ChatComponent = () => {
       const result = await sendMessage(data)
       setLoading(false)
       if (result?.success && result?.data) {
-        setMessages((ps: any) => [...ps, { query: result?.data?.query, response: result?.data?.response }])
+        setMessages((ps: any[]) => {
+          // Check if ps is an array before spreading it
+          const newArray = Array.isArray(ps) ? [...ps] : []
+          return [...newArray, { query: result?.data?.query, response: result?.data?.response }]
+        })
       } else {
         toast.error("Something went wrong!")
       }
     }
   }
   const scrollToBottom = () => {
-    if (messagesEndRef.current === null) {
+    // if (messagesEndRef.current === null) {
+    // }
+    // messagesEndRef!.current!.scrollIntoView({ block: "end", behavior: "smooth" })
+    const divRef = document.getElementById("divRef")
+    if (divRef) {
+      divRef.scrollIntoView({ behavior: "smooth" })
     }
-    messagesEndRef!.current!.scrollIntoView({ block: "end", behavior: "smooth" })
+    // if (id === 0 && page === true) {
+    //   reftp.scrollIntoView({ behavior: "smooth" })
+    //   setPage(false)
+    // } else if (id === 1 && page === false) {
+    //   refpp.scrollIntoView({ behavior: "smooth" })
+    //   setPage(true)
+    // }
   }
 
   useEffect(() => {
@@ -129,7 +144,7 @@ const ChatComponent = () => {
                     </>
                   )
                 })}
-                <div ref={messagesEndRef} />
+                <div id="divRef" ref={messagesEndRef} />
               </>
             )}
           </div>

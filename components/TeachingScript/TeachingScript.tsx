@@ -27,7 +27,7 @@ const TeachingScript = () => {
     console.time(".map()")
     setHeadingLoading(true)
     await Promise.all(
-      tableOfContent.map(async (each: any, index: any) => {
+      tableOfContent?.map(async (each: any, index: any) => {
         setActiveHeading(each?.heading)
         let data = await callApi(each?.heading)
         setNextHeading(tableOfContent[index + 1]?.heading)

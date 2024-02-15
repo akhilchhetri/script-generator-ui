@@ -46,7 +46,7 @@ const Sidebar = () => {
     formData.append("files", selectedFile)
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/upload/", formData, {
+      const response = await axios.post("http://13.40.134.77:8000/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

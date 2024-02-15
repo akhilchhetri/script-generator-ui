@@ -19,7 +19,7 @@ const Syllabus = () => {
   const handleSaveTitle = (index) => {
     let updated_content = []
     setShowUpdate(true)
-    tableOfContent.map((each, i) => {
+    tableOfContent?.map((each, i) => {
       if (index !== i) {
         updated_content.push(each)
       }
@@ -39,7 +39,7 @@ const Syllabus = () => {
   const handleRemoveTitle = (index) => {
     toast.success("Title removed!")
     let updated_content = []
-    tableOfContent.map((each, i) => {
+    tableOfContent?.map((each, i) => {
       if (index !== i) {
         updated_content.push(each)
       }
@@ -77,10 +77,10 @@ const Syllabus = () => {
       <div className="mt-6 flex flex-col items-start gap-2">
         {documentData && documentData?.document_id && (
           <>
-            {tableOfContent.map((each, index) => {
+            {tableOfContent?.map((each, index) => {
               return (
                 <div className="flex flex-row items-center gap-2 rounded-[20px] bg-white px-4 py-2" key={index}>
-                  <span className="h-6 w-6 rounded-full bg-[#66C7C9] text-center text-[16px] font-[800] text-[#FEFEFE]">
+                  <span className="rounded-fßll h-6 w-6 bg-[#66C7C9] text-center text-[16px] font-[800] text-[#FEFEFE]">
                     {index + 1}
                   </span>
                   {editId !== index && (

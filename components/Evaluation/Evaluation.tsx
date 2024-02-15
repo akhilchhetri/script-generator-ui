@@ -25,7 +25,7 @@ const Evaluation = () => {
     console.time(".map()")
     setHeadingLoading(true)
     await Promise.all(
-      tableOfContent.map(async (each: any, index: any) => {
+      tableOfContent?.map(async (each: any, index: any) => {
         setActiveHeading(each?.heading)
         let data = await callApi(each?.heading)
         setNextHeading(tableOfContent[index + 1]?.heading)
@@ -119,7 +119,7 @@ const Evaluation = () => {
                 </>
               )}
             </div>
-            {headingLoading && (activeHeading || nextHeading) && (
+            {/* {headingLoading && (activeHeading || nextHeading) && (
               <div className="flex flex-row items-center justify-center gap-2">
                 <MoonLoader className="" size="20" color="#66C7C9" />
                 <h2 className="text-[16px] font-[500]">
@@ -129,7 +129,7 @@ const Evaluation = () => {
                   </span>
                 </h2>
               </div>
-            )}
+            )} */}
           </>
         )}
       </div>
