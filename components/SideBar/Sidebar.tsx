@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { toast } from "react-toastify"
 import { useAppContext } from "app/context/AppContext"
-import { generateSyllabus } from "app/services/callapi"
 const menus = [
   { id: 1, name: "Syllabus" },
   { id: 2, name: "Teaching Script" },
@@ -95,7 +94,7 @@ const Sidebar = () => {
         width={"100"}
         height={"100"}
         alt="img"
-        className="mx-auto mt-2 mt-[35px] h-[50px] w-[180px] cursor-pointer"
+        className="mx-auto mt-[35px] h-[50px] w-[180px] cursor-pointer"
       />
       {documentId && file && (
         <div className="ml-5 pt-10">

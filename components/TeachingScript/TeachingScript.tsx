@@ -112,7 +112,7 @@ const TeachingScript = () => {
                     <h2 className="text-[16px] font-[500] text-[#80909C]">
                       Generating script for{" "}
                       <span className="font-[700] underline">
-                        "{nextHeading ? nextHeading?.slice(0, 10) : activeHeading?.slice(0, 20)}..."
+                        `{nextHeading ? nextHeading?.slice(0, 10) : activeHeading?.slice(0, 20)}...`
                       </span>
                     </h2>
                   </div>

@@ -17,7 +17,6 @@ const MainContainer = () => {
     setFullView,
     showChat,
     setShowChat,
-    view,
     setExpandedEv,
     setExpandedTs,
   } = useAppContext()

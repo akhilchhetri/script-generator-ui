@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { MutableRefObject, useEffect, useRef, useState } from "react"
 import { MoonLoader } from "react-spinners"
 import { toast } from "react-toastify"
 import { useAppContext } from "app/context/AppContext"
@@ -30,9 +30,9 @@ const ChatComponent = () => {
     }
   }
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    if (messagesEndRef.current === null) {
     }
+    messagesEndRef!.current!.scrollIntoView({ block: "end", behavior: "smooth" })
   }
 
   useEffect(() => {

@@ -111,7 +111,7 @@ const Evaluation = () => {
                       <h2 className="text-[16px] font-[500] text-[#80909C]">
                         Generating script for{" "}
                         <span className="font-[700] underline">
-                          "{nextHeading ? nextHeading?.slice(0, 10) : activeHeading?.slice(0, 20)}..."
+                          &quot;{nextHeading ? nextHeading?.slice(0, 10) : activeHeading?.slice(0, 20)}...&quot;
                         </span>
                       </h2>
                     </div>
@@ -125,7 +125,7 @@ const Evaluation = () => {
                 <h2 className="text-[16px] font-[500]">
                   Generating questions for{" "}
                   <span className="font-[700] underline">
-                    "{nextHeading ? nextHeading?.slice(0, 20) : activeHeading?.slice(0, 20)}..."
+                    &quot;{nextHeading ? nextHeading?.slice(0, 20) : activeHeading?.slice(0, 20)}...&quot;
                   </span>
                 </h2>
               </div>
