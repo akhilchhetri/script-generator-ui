@@ -163,7 +163,7 @@ const ChatComponent = () => {
               className="absolute right-4 top-0 flex h-full cursor-pointer flex-row items-center justify-center"
               onClick={() => handleSendMessage()}
             >
-              <MoonLoader size={"20"} />
+              <MoonLoader size={"24"} color="#404040" />
             </div>
           )}
           {!loading && (

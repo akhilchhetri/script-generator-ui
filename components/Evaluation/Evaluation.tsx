@@ -81,7 +81,7 @@ const Evaluation = () => {
       {headingLoading && (
         <div className="flex flex-row items-center gap-2">
           <h2 className="font-[700]">Generating Evaluation Questions, Please wait!</h2>
-          <MoonLoader className="" size="20" color="#66C7C9" />
+          <MoonLoader className="" size="25" color="#404040" />
         </div>
       )}
       <div className="flex w-full flex-col items-start gap-2">
@@ -108,7 +108,7 @@ const Evaluation = () => {
 
                   {headingLoading && (activeHeading || nextHeading) && (
                     <div className="flex flex-row items-center justify-center gap-2">
-                      <MoonLoader className="" size="20" color="#66C7C9" />
+                      <MoonLoader className="" size="25" color="#404040" />
                       <h2 className="text-[16px] font-[500] text-[#80909C]">
                         Generating script for{" "}
                         <span className="font-[700] underline">
