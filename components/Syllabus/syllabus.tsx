@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { TiTick } from "react-icons/ti"
+import { MoonLoader } from "react-spinners"
 import { toast } from "react-toastify"
 
 import { useAppContext } from "app/context/AppContext"
-import { updateSyllabus } from "app/services/callapi"
+import { stopAllPromises, updateSyllabus } from "app/services/callapi"
 const Syllabus = () => {
   const { activeMenu, documentId, documentData, setDocumentData, tableOfContent, setTableOfContent } = useAppContext()
 
@@ -11,14 +12,17 @@ const Syllabus = () => {
   const [editId, setEditId] = useState(undefined)
   const [title, setTitle] = useState(undefined)
   const [showUpdate, setShowUpdate] = useState(false)
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
-    if (tableOfContent?.length !== documentData?.table_of_contents?.length) {
+    if (tableOfContent?.length !== documentData?.table_of_contents?.length && edit) {
       setShowUpdate(true)
+    } else {
+      // setShowUpdate(false)
     }
   }, [tableOfContent])
+
   const handleSaveTitle = (index) => {
     let updated_content = []
-    setShowUpdate(true)
     tableOfContent?.map((each, i) => {
       if (index !== i) {
         updated_content.push(each)
@@ -31,12 +35,14 @@ const Syllabus = () => {
     })
     toast.success("Title updated!")
     setTableOfContent(updated_content)
+    setShowUpdate(true)
     setEditId(undefined)
     setEdit(false)
     setTitle(undefined)
   }
 
   const handleRemoveTitle = (index) => {
+    setShowUpdate(true)
     toast.success("Title removed!")
     let updated_content = []
     tableOfContent?.map((each, i) => {
@@ -47,6 +53,7 @@ const Syllabus = () => {
     setTableOfContent(updated_content)
   }
   const handleUpdateSyllabus = async () => {
+    setLoading(true)
     const data = {
       document_id: documentId,
       table_of_contents: tableOfContent,
@@ -62,6 +69,8 @@ const Syllabus = () => {
     } else {
       toast.error("Error occured!")
     }
+    setLoading(false)
+    setShowUpdate(false)
   }
   return (
     <div className="relative ml-5 flex flex-col items-start">
@@ -71,7 +80,18 @@ const Syllabus = () => {
           className="mt-2 rounded-[15px] bg-[#66C7C9] px-3 py-2 text-[16px] font-[700] text-white"
           onClick={() => handleUpdateSyllabus()}
         >
-          Save Changes
+          {showUpdate && (
+            <>
+              {loading ? (
+                <div className="flex flex-row items-center gap-2">
+                  <span>Updating</span>
+                  <MoonLoader size={"16"} />
+                </div>
+              ) : (
+                "Save Changes"
+              )}
+            </>
+          )}
         </button>
       )}
       <div className="mt-6 flex flex-col items-start gap-2">

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io"
 import { MoonLoader } from "react-spinners"
+import { toast } from "react-toastify"
 import { count } from "console"
 import { useAppContext } from "app/context/AppContext"
-import { generateScript } from "app/services/callapi"
+import { generateScript, stopAllPromises } from "app/services/callapi"
 import ExpandedScript from "./ExpandedScript"
 
 const TeachingScript = () => {
@@ -31,11 +32,13 @@ const TeachingScript = () => {
         setActiveHeading(each?.heading)
         let data = await callApi(each?.heading)
         setNextHeading(tableOfContent[index + 1]?.heading)
-        let result = {
-          heading: data?.heading_info?.heading,
-          script: data?.script,
+        if (data) {
+          let result = {
+            heading: data?.heading_info?.heading,
+            script: data?.script,
+          }
+          setScript((ps: any) => [...ps, result])
         }
-        setScript((ps: any) => [...ps, result])
       })
     )
     setHeadingLoading(false)
@@ -61,6 +64,9 @@ const TeachingScript = () => {
       console.log("error", e)
     }
   }
+  // useEffect(() => {
+  //   stopAllPromises()
+  // }, [])
 
   const handleRegenerate = () => {
     if (script && script?.length > 0) {
@@ -69,7 +75,6 @@ const TeachingScript = () => {
       makeRequests()
     }
   }
-  console.log("this is", activeScript)
   return (
     <div className="flex h-full flex-col items-start px-3">
       {expandedTs && <ExpandedScript activeScript={activeScript} setExpandedTs={setExpandedTs} />}
@@ -94,7 +99,7 @@ const TeachingScript = () => {
             {documentData && documentData?.document_id && (
               <>
                 <div className="grid w-full grid-cols-4 items-start lg:grid-cols-4 lg:gap-[1.5vw] xl:grid-cols-4 xl:gap-[2vw] 2xl:grid-cols-5">
-                  {script?.map((each, index) => {
+                  {script?.map((each: any, index: number) => {
                     return (
                       <ScriptComponent
                         data={each}
@@ -128,24 +133,30 @@ const TeachingScript = () => {
 export default TeachingScript
 
 const ScriptComponent = ({ data, setExpandedTs, setActiveScript }: any) => {
-  return (
-    <div className="relative pr-[25px] pt-[25px]">
-      <div className="relative flex h-[325px]  w-[234px] cursor-pointer flex-col overflow-hidden rounded-[25px] bg-white p-3 px-5 pb-5 shadow-md">
-        <h1 className="mt-[45px] text-left text-[22px] font-[700] text-[#80909C]">{data?.heading?.slice(0, 18)}</h1>
-        <p className="pb-3 text-left text-[12px] font-[800] leading-[20px] text-[#80909C]">
-          {data?.script?.slice(0, 100)}
-        </p>
-        <button
-          onClick={() => {
-            setActiveScript(data)
-            setExpandedTs(true)
-          }}
-          className="mt-3 text-left text-[12px] font-[800] text-[#66C7C9]"
-        >
-          Read More ...
-        </button>
+  if (data?.heading) {
+    return (
+      <div className="relative pr-[25px] pt-[25px]">
+        <div className="relative flex h-[325px]  w-[234px] cursor-pointer flex-col overflow-hidden rounded-[25px] bg-white p-3 px-5 pb-5 shadow-md">
+          <h1 className="mt-[45px] text-left text-[22px] font-[700] text-[#80909C]">
+            {data?.heading_info?.heading?.slice(0, 18)}
+          </h1>
+          <p className="pb-3 text-left text-[12px] font-[800] leading-[20px] text-[#80909C]">
+            {data?.script?.slice(0, 100)}
+          </p>
+          <button
+            onClick={() => {
+              setActiveScript(data)
+              setExpandedTs(true)
+            }}
+            className="mt-3 text-left text-[12px] font-[800] text-[#66C7C9]"
+          >
+            Read More ...
+          </button>
+        </div>
+        <div className="absolute right-2 top-2 z-[100] h-[50px] w-[50px] rounded-full bg-[#CEE5F2]"></div>
       </div>
-      <div className="absolute right-2 top-2 z-[100] h-[50px] w-[50px] rounded-full bg-[#CEE5F2]"></div>
-    </div>
-  )
+    )
+  } else {
+    return
+  }
 }

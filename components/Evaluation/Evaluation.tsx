@@ -3,7 +3,7 @@ import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io"
 import { MoonLoader } from "react-spinners"
 import { count } from "console"
 import { useAppContext } from "app/context/AppContext"
-import { generateEvaluation, generateScript } from "app/services/callapi"
+import { generateEvaluation, generateScript, stopAllPromises } from "app/services/callapi"
 
 const Evaluation = () => {
   const { documentData, tableOfContent, documentId, fullView, setFullView, setActiveScript, setExpandedEv } =
@@ -21,6 +21,7 @@ const Evaluation = () => {
       makeRequests()
     }
   }, [tableOfContent])
+
   const makeRequests = async () => {
     console.time(".map()")
     setHeadingLoading(true)

@@ -110,7 +110,18 @@ export const AppContextProvider = ({ children }: { children: any }) => {
     setDocumentData({})
     setFile(undefined)
     setMessages([])
+    setActiveScript(undefined)
+    setFullView(false)
+    setTableOfContent([])
+    setMessages([])
+    setExpandedEv(false)
+    setExpandedTs(false)
+    localStorage.removeItem("documentId")
+    localStorage.removeItem("documentData")
     localStorage.removeItem("chat")
+    localStorage.removeItem("eq")
+    localStorage.removeItem("teaching_script")
+    localStorage.removeItem("file_name")
   }
 
   return (

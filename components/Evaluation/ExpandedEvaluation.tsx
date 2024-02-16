@@ -46,8 +46,6 @@ const ExpandedEvaluation = ({ showChat, activeScript, setExpandedEv }: any) => {
 export default ExpandedEvaluation
 
 const QuestionComponent = ({ data }: any) => {
-  console.log("this is data", data)
-
   return (
     <div className="">
       {data?.map((each: any, index: any) => {

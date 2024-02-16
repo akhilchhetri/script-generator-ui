@@ -68,7 +68,6 @@ const Sidebar = () => {
       }
 
       if (response) {
-        console.log("File uploaded successfully")
         // Handle success
         setLoading(false)
       } else {
@@ -82,9 +81,7 @@ const Sidebar = () => {
   }
   const handleRemoveFile = () => {
     resetState()
-    localStorage.removeItem("documentId")
-    localStorage.removeItem("documentData")
-    localStorage.removeItem("file_name")
+
     toast.success("File removed!")
   }
   return (

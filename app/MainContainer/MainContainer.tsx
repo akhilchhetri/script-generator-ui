@@ -19,8 +19,15 @@ const MainContainer = () => {
     setShowChat,
     setExpandedEv,
     setExpandedTs,
+    resetState,
   } = useAppContext()
-  console.log(expandedEv, expandedTs)
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (!documentId) {
+  //       resetState()
+  //     }
+  //   }, 3000)
+  // }, [])
   return (
     <div className="relative m-0 h-full p-0">
       {activeMenu === 1 && documentId && <Syllabus />}
