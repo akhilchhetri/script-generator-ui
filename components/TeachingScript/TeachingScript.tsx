@@ -53,7 +53,7 @@ const TeachingScript = () => {
   const callApi = async (activeHeading: any) => {
     try {
       const data = {
-        heading_name: activeHeading,
+        heading: activeHeading,
         document_id: documentId || documentData?.documentId,
       }
       let result = await generateScript(data)

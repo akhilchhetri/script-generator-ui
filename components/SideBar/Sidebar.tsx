@@ -81,7 +81,6 @@ const Sidebar = () => {
   }
   const handleRemoveFile = () => {
     resetState()
-
     toast.success("File removed!")
   }
   return (

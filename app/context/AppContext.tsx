@@ -78,7 +78,6 @@ export const useAppContext = () => useContext(AppContext)
 
 export const AppContextProvider = ({ children }: { children: any }) => {
   const [documentId, setDocumentId] = useState<string | undefined>(undefined)
-
   const [documentData, setDocumentData] = useState({})
   const [activeMenu, setActiveMenu] = useState(1)
   const [file, setFile] = useState(undefined)
