@@ -49,7 +49,7 @@ const Evaluation = () => {
   const callApi = async (activeHeading: any) => {
     try {
       const data = {
-        topic_name: activeHeading,
+        heading: activeHeading,
         document_id: documentId || documentData?.documentId,
       }
       let result = await generateEvaluation(data)
