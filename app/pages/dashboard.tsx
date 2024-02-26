@@ -35,7 +35,7 @@ const Dashboard = () => {
         let data = response?.data
         if (data?.success) {
           setDocumentId(data?.data?.document_id)
-          toast.success("File uploaded successfully")
+          toast.success("Syllabus generated successfully")
           localStorage.setItem("documentId", data?.data?.document_id)
           setDocumentData(data?.data)
           localStorage.setItem("documentData", JSON.stringify(data?.data))

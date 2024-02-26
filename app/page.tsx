@@ -16,7 +16,6 @@ import Dashboard from "./pages/dashboard"
 
 export default function Web() {
   const { documentId } = useAppContext()
-  console.log("this is documentId", documentId)
   useEffect(() => {
     if (documentId) {
       alert("document Id")

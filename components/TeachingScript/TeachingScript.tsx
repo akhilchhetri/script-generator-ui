@@ -8,8 +8,17 @@ import { generateScript, stopAllPromises } from "app/services/callapi"
 import ExpandedScript from "./ExpandedScript"
 
 const TeachingScript = () => {
-  const { documentData, tableOfContent, documentId, expandedTs, setExpandedTs, activeScript, setActiveScript } =
-    useAppContext()
+  const {
+    documentData,
+    tableOfContent,
+    documentId,
+    expandedTs,
+    setExpandedTs,
+    activeScript,
+    setActiveScript,
+    eachIndex,
+    setEachIndex,
+  } = useAppContext()
   const teaching_script = JSON.parse(localStorage.getItem("teaching_script"))
   const [script, setScript] = useState(teaching_script?.length > 0 ? teaching_script : [])
   const [headingLoading, setHeadingLoading] = useState(false)
@@ -64,9 +73,6 @@ const TeachingScript = () => {
       console.log("error", e)
     }
   }
-  // useEffect(() => {
-  //   stopAllPromises()
-  // }, [])
 
   const handleRegenerate = () => {
     if (script && script?.length > 0) {
@@ -104,8 +110,10 @@ const TeachingScript = () => {
                       <ScriptComponent
                         data={each}
                         key={index}
+                        index={index}
                         setExpandedTs={setExpandedTs}
                         setActiveScript={setActiveScript}
+                        setEachIndex={setEachIndex}
                       />
                     )
                   })}
@@ -133,7 +141,7 @@ const TeachingScript = () => {
 }
 export default TeachingScript
 
-const ScriptComponent = ({ data, setExpandedTs, setActiveScript }: any) => {
+const ScriptComponent = ({ data, index, setExpandedTs, setActiveScript, setEachIndex }: any) => {
   if (data?.heading) {
     return (
       <div className="relative pr-[25px] pt-[25px]">
@@ -146,6 +154,7 @@ const ScriptComponent = ({ data, setExpandedTs, setActiveScript }: any) => {
           </p>
           <button
             onClick={() => {
+              setEachIndex(index)
               setActiveScript(data)
               setExpandedTs(true)
             }}

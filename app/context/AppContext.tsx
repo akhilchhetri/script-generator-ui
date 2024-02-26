@@ -24,6 +24,8 @@ interface ContextData {
   tableOfContent: Array<[]>
   setTableOfContent: Dispatch<any>
   resetState: any
+  eachIndex: number
+  setEachIndex: Dispatch<SetStateAction<number>>
 }
 const AppContext = createContext<ContextData>({
   documentId: undefined,
@@ -73,12 +75,17 @@ const AppContext = createContext<ContextData>({
   resetState: function (value: any): void {
     throw new Error("Function not implemented")
   },
+  eachIndex: 0,
+  setEachIndex: function (value: SetStateAction<number>): void {
+    throw new Error("Function not implemented.")
+  },
 })
 export const useAppContext = () => useContext(AppContext)
 
 export const AppContextProvider = ({ children }: { children: any }) => {
   const [documentId, setDocumentId] = useState<string | undefined>(undefined)
   const [documentData, setDocumentData] = useState({})
+  const [eachIndex, setEachIndex] = useState(0)
   const [activeMenu, setActiveMenu] = useState(1)
   const [file, setFile] = useState(undefined)
   const [expandedEv, setExpandedEv] = useState(false)
@@ -149,6 +156,8 @@ export const AppContextProvider = ({ children }: { children: any }) => {
         setExpandedTs,
         messages,
         setMessages,
+        eachIndex,
+        setEachIndex,
       }}
     >
       {children}

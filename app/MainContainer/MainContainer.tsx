@@ -20,6 +20,7 @@ const MainContainer = () => {
     setExpandedEv,
     setExpandedTs,
     resetState,
+    setActiveScript,
   } = useAppContext()
   // useEffect(() => {
   //   setTimeout(() => {
@@ -33,10 +34,23 @@ const MainContainer = () => {
       {activeMenu === 1 && documentId && <Syllabus />}
       {!expandedTs && activeMenu === 2 && documentId && <TeachingScript />}
       {!expandedEv && activeMenu === 3 && documentId && <Evaluation />}
-      {expandedTs && <ExpandedScript showChat={showChat} activeScript={activeScript} setExpandedTs={setExpandedTs} />}
+      {expandedTs && (
+        <ExpandedScript
+          documentId={documentId}
+          showChat={showChat}
+          activeScript={activeScript}
+          setExpandedTs={setExpandedTs}
+        />
+      )}
       {expandedEv && (
         <>
-          <ExpandedEvaluation showChat={showChat} activeScript={activeScript} setExpandedEv={setExpandedEv} />
+          <ExpandedEvaluation
+            showChat={showChat}
+            activeScript={activeScript}
+            setExpandedEv={setExpandedEv}
+            setActiveScript={setActiveScript}
+            documentId={documentId}
+          />
         </>
       )}
       {showChat && (

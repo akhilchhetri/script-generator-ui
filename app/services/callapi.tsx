@@ -2,9 +2,15 @@ import axios from "axios"
 
 const CancelToken = axios.CancelToken
 const source = CancelToken.source()
+// const Axios = axios.create({
+//   baseURL: "http://13.40.134.77:8000",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// })
 
 const Axios = axios.create({
-  baseURL: "http://13.40.134.77:8000",
+  baseURL: "http://localhost:8000",
   headers: {
     "Content-Type": "application/json",
   },
@@ -49,6 +55,32 @@ export const generateEvaluation = async (data: any) => {
 export const updateSyllabus = async (data: any) => {
   try {
     const response = await Axios.patch("/syllabus/update", { ...data })
+    if (response?.status === 200 && response?.data) {
+      return response?.data
+    } else {
+      return { success: false }
+    }
+  } catch (e) {
+    return { success: false }
+  }
+}
+
+export const updateScript = async (data: any) => {
+  try {
+    const response = await Axios.patch("/script/update", { ...data })
+    if (response?.status === 200 && response?.data) {
+      return response?.data
+    } else {
+      return { success: false }
+    }
+  } catch (e) {
+    return { success: false }
+  }
+}
+
+export const updateQna = async (data: any) => {
+  try {
+    const response = await Axios.patch("/qna/update", { ...data })
     if (response?.status === 200 && response?.data) {
       return response?.data
     } else {

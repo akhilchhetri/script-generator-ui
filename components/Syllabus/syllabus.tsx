@@ -6,13 +6,26 @@ import { toast } from "react-toastify"
 import { useAppContext } from "app/context/AppContext"
 import { stopAllPromises, updateSyllabus } from "app/services/callapi"
 const Syllabus = () => {
-  const { activeMenu, documentId, documentData, setDocumentData, tableOfContent, setTableOfContent } = useAppContext()
+  const {
+    activeMenu,
+    documentId,
+    documentData,
+    setDocumentData,
+    tableOfContent,
+    setTableOfContent,
+    setExpandedEv,
+    setExpandedTs,
+  } = useAppContext()
 
   const [edit, setEdit] = useState(false)
   const [editId, setEditId] = useState(undefined)
   const [title, setTitle] = useState(undefined)
   const [showUpdate, setShowUpdate] = useState(false)
   const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    setExpandedEv(false)
+    setExpandedTs(false)
+  }, [])
   useEffect(() => {
     if (tableOfContent?.length !== documentData?.table_of_contents?.length && edit) {
       setShowUpdate(true)
@@ -100,7 +113,7 @@ const Syllabus = () => {
             {tableOfContent?.map((each, index) => {
               return (
                 <div className="flex flex-row items-center gap-2 rounded-[20px] bg-white px-4 py-2" key={index}>
-                  <span className="rounded-fßll h-6 w-6 bg-[#66C7C9] text-center text-[16px] font-[800] text-[#FEFEFE]">
+                  <span className="h-6 w-6 rounded-full bg-[#66C7C9] text-center text-[16px] font-[800] text-[#FEFEFE]">
                     {index + 1}
                   </span>
                   {editId !== index && (
