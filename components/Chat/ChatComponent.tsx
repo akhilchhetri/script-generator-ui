@@ -34,20 +34,10 @@ const ChatComponent = () => {
     }
   }
   const scrollToBottom = () => {
-    // if (messagesEndRef.current === null) {
-    // }
-    // messagesEndRef!.current!.scrollIntoView({ block: "end", behavior: "smooth" })
     const divRef = document.getElementById("divRef")
     if (divRef) {
       divRef.scrollIntoView({ behavior: "smooth" })
     }
-    // if (id === 0 && page === true) {
-    //   reftp.scrollIntoView({ behavior: "smooth" })
-    //   setPage(false)
-    // } else if (id === 1 && page === false) {
-    //   refpp.scrollIntoView({ behavior: "smooth" })
-    //   setPage(true)
-    // }
   }
 
   useEffect(() => {

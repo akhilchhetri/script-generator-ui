@@ -71,9 +71,10 @@ const QuestionComponent = ({ data, setActiveScript, heading, documentId }: any) 
       document_id: documentId,
       evaluation_quesions: data,
     }
-    console.log("this is test", test)
     const result = await updateQna(test)
-    console.log("This is update response", result)
+    if (result?.success) {
+      toast.success("")
+    }
   }
   return (
     <div className="">

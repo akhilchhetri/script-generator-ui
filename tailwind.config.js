@@ -65,7 +65,10 @@ module.exports = {
           "Segoe UI Symbol",
           "Noto Color Emoji",
         ],
+        montLight: ["MontLight", "sans-serif"],
+        montHeavy: ["MontHeavy", "sans-serif"],
       },
+
       borderWidth: {
         DEFAULT: "1px",
         0: "0",

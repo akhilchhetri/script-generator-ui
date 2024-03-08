@@ -17,3 +17,16 @@
   width: 15px !important;
   border-radius: 20px;
 }
+
+@layer base {
+  @font-face {
+    font-family: "MontLight";
+    src: url("../public/fonts/Mont-ExtraLightDEMO.otf");
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "MontHeavy";
+    src: url("../public/fonts/Mont-HeavyDEMO.otf");
+    font-style: normal;
+  }
+}
