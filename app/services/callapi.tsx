@@ -9,7 +9,7 @@ const source = CancelToken.source()
 //   },
 // })
 
-export const baseUrl = "http://localhost:8000"
+export const baseUrl = "http://13.40.134.77:8000"
 
 const Axios = axios.create({
   baseURL: baseUrl,
