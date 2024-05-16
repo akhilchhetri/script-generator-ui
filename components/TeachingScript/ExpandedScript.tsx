@@ -14,10 +14,8 @@ const ExpandedScript = ({ documentId, showChat, activeScript, setExpandedTs }: a
     setShowEdit((ps) => !ps)
     const payload = {
       script: script,
-      document_id: documentId,
-      heading: activeScript?.heading,
     }
-    const result = await updateScript(payload)
+    const result = await updateScript(payload, activeScript?.id)
     if (result?.success) {
       toast.success("Script updated successfully")
       const data = {
@@ -38,6 +36,8 @@ const ExpandedScript = ({ documentId, showChat, activeScript, setExpandedTs }: a
       })
       setTs(d)
       localStorage.setItem("teaching_script", JSON.stringify(d))
+    }else{
+      toast.error("Error occured, Try again.")
     }
   }
   return (

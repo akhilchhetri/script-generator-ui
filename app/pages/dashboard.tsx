@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { useAppContext } from "app/context/AppContext"
 import Link from "next/link"
+import { baseUrl } from "app/services/callapi"
 
 const Dashboard = () => {
   const { setDocumentData, setDocumentId, setFile, documentId } = useAppContext()
@@ -26,12 +27,11 @@ const Dashboard = () => {
     formData.append("files", selectedFile)
     toast.success("Uploading file")
     try {
-      const response = await axios.post("http://13.40.134.77:8000/upload", formData, {
+      const response = await axios.post(`${baseUrl}/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-
       if (response?.status === 200) {
         let data = response?.data
         if (data?.success) {

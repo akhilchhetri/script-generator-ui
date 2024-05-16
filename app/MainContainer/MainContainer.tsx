@@ -54,17 +54,17 @@ const MainContainer = () => {
         </>
       )}
       {showChat && (
-        <div className="top fixed bottom-[63px] right-[15px]  z-[120] h-[87.7vh] w-[30%] 2xl:h-[90vh]">
+        <div className="top fixed bottom-0 right-0 md:bottom-[63px] md:right-[15px]  z-[120] h-[100vh] md:h-[87.7vh] w-[100%] md:w-[45%] lg:w-[38%] 2xl:h-[90vh]">
           <ChatComponent />
         </div>
       )}
       {!showChat && (
-        <div className="fixed bottom-5 right-5 z-[120] flex w-[10%] flex-row items-start justify-end ">
+        <div className="fixed bottom-5 right-5 z-[120] flex w-[20%] flex-row items-start justify-end ">
           <div
-            className="cursor-pointer self-end rounded-full bg-white p-[15px] shadow-md"
+            className="cursor-pointer self-end rounded-full"
             onClick={() => setShowChat(true)}
           >
-            <Image alt="chat" src="/images/chat.png" height="65" width="65" />
+            <Image alt="chat" src="/images/chat.png" className="m-0 md:mb-5" height="100" width="100" />
           </div>
         </div>
       )}

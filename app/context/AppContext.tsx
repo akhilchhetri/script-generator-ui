@@ -104,11 +104,11 @@ export const AppContextProvider = ({ children }: { children: any }) => {
     message = JSON.parse(message)
     setDocumentData(doc_data)
     setMessages(message)
-    setTableOfContent(documentData?.table_of_contents)
+    setTableOfContent(documentData?.contents)
   }, [])
   useEffect(() => {
     if (documentData && documentId) {
-      setTableOfContent(documentData?.table_of_contents)
+      setTableOfContent(documentData?.contents)
     }
   }, [documentData])
   const resetState = () => {

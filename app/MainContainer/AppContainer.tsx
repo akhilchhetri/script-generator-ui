@@ -4,6 +4,7 @@ import { useAppContext } from "app/context/AppContext"
 import Dashboard from "app/pages/dashboard"
 import Sidebar from "components/SideBar/Sidebar"
 import MainContainer from "./MainContainer"
+import TabContainer from "./TabContainer"
 
 const AppContainer = () => {
   const { documentId, setDocumentId } = useAppContext()
@@ -16,10 +17,11 @@ const AppContainer = () => {
   if (documentId && !loading) {
     return (
       <>
-        <div className="h-[100vh] w-[25vw] md:w-[20vw] lg:w-[15vw]">
+        <div className="h-[100vh] w-[25vw] lg:w-[20vw] hidden md:block">
           <Sidebar />
         </div>
-        <div className="mx-auto my-[23px] w-[75vw] self-auto rounded-[20px]  bg-[#E3ECF3] px-4 py-8 text-center md:w-[80vw] lg:w-[85vw]">
+        <div className="mx-auto my-0 md:my-[23px] w-full sm:w-[100vw] min-h-[100vh] md:min-h-[auto] self-auto rounded-none md:rounded-[20px] bg-[#D5E7FA] md:bg-[#E3ECF3] px-4 py-8 text-center md:w-[75vw] lg:w-[80vw]">
+          <TabContainer />
           <div className="mx-auto h-full w-full">
             <MainContainer />
             <div className="flex flex-row justify-start">

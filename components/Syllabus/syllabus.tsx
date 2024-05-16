@@ -4,7 +4,7 @@ import { MoonLoader } from "react-spinners"
 import { toast } from "react-toastify"
 
 import { useAppContext } from "app/context/AppContext"
-import { stopAllPromises, updateSyllabus } from "app/services/callapi"
+import { deleteSyllabus, stopAllPromises, updateSyllabus } from "app/services/callapi"
 const Syllabus = () => {
   const {
     activeMenu,
@@ -21,77 +21,72 @@ const Syllabus = () => {
   const [editId, setEditId] = useState(undefined)
   const [title, setTitle] = useState(undefined)
   const [showUpdate, setShowUpdate] = useState(false)
+  const [eachEdit, setEachEdit] = useState(undefined)
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     setExpandedEv(false)
     setExpandedTs(false)
   }, [])
   useEffect(() => {
-    if (tableOfContent?.length !== documentData?.table_of_contents?.length && edit) {
+    if (tableOfContent?.length !== documentData?.contents?.length && edit) {
       setShowUpdate(true)
     } else {
       // setShowUpdate(false)
     }
   }, [tableOfContent])
 
-  const handleSaveTitle = (index) => {
+  const handleSaveTitle = async(index:any, each: any) => {
     let updated_content = []
-    tableOfContent?.map((each, i) => {
-      if (index !== i) {
+    each.name = title
+    tableOfContent?.map((e, i) => {
+      if (each?.id !== e?.id) {
+        updated_content.push(e)
+      }
+      if (each?.id === e?.id) {
         updated_content.push(each)
       }
-      if (index === i) {
-        let data = { ...each }
-        data.heading = title
-        updated_content.push(data)
-      }
     })
-    toast.success("Title updated!")
-    setTableOfContent(updated_content)
-    setShowUpdate(true)
+    const response = await updateSyllabus(each)
+     if (response?.error) {
+      toast.error("Error occured!")
+     } else {
+      setTableOfContent(tableOfContent)
+      if (response?.id) {
+        setDocumentData(documentData)
+        localStorage.setItem("documentData", JSON.stringify(documentData))
+      }
+      toast.success("Syllabus updated successfully.")
+     }
     setEditId(undefined)
     setEdit(false)
     setTitle(undefined)
   }
 
-  const handleRemoveTitle = (index) => {
-    setShowUpdate(true)
-    toast.success("Title removed!")
+  const handleRemoveTitle = async(index, data) => {
     let updated_content = []
+
     tableOfContent?.map((each, i) => {
       if (index !== i) {
         updated_content.push(each)
       }
     })
-    setTableOfContent(updated_content)
-  }
-  const handleUpdateSyllabus = async () => {
-    setLoading(true)
-    const data = {
-      document_id: documentId,
-      table_of_contents: tableOfContent,
+    const response = await deleteSyllabus(data)
+    if(response && !response?.success){
+      toast.error(response?.message || "Error occured")
+    }else{
+      toast.success(data?.message || "Heading deleted successfully")
+      setTableOfContent(updated_content)
+      setDocumentData(documentData)
+      localStorage.setItem("documentData", JSON.stringify(documentData))
     }
-    const response = await updateSyllabus(data)
-    if (response?.success) {
-      setTableOfContent(response?.data?.table_of_contents || tableOfContent)
-      if (response?.data) {
-        setDocumentData(response?.data || documentData)
-        localStorage.setItem("documentData", JSON.stringify(response?.data))
-      }
-      toast.success("Syllabus updated successfully.")
-    } else {
-      toast.error("Error occured!")
-    }
-    setLoading(false)
-    setShowUpdate(false)
   }
+
   return (
     <div className="relative ml-5 flex flex-col items-start">
-      <h1 className="text-left text-[28px] font-[800] leading-[35.78px] text-[#404040]">Syllabus</h1>
+      <h1 className="hidden md:block text-left text-[28px] font-[800] leading-[35.78px] text-[#404040]">Syllabus</h1>
       {showUpdate && (
         <button
           className="mt-2 rounded-[15px] bg-[#66C7C9] px-3 py-2 text-[16px] font-[700] text-white"
-          onClick={() => handleUpdateSyllabus()}
         >
           {showUpdate && (
             <>
@@ -117,9 +112,9 @@ const Syllabus = () => {
                     {index + 1}
                   </span>
                   {editId !== index && (
-                    <span className="text-[16px] font-[800] text-[#404040]">
-                      {each?.heading?.slice(0, 70)}
-                      {each?.heading?.length > 69 ? " ..." : ""}
+                    <span className="text-[16px] text-left font-[800] text-[#404040]">
+                      {each?.name?.slice(0, 70)}
+                      {each?.name?.length > 69 ? " ..." : ""}
                     </span>
                   )}
                   {edit && editId === index && (
@@ -137,7 +132,7 @@ const Syllabus = () => {
                         onClick={() => {
                           setEditId(index)
                           setEdit(true)
-                          setTitle(each?.heading)
+                          setTitle(each?.name)
                         }}
                         key={index}
                       >
@@ -157,7 +152,7 @@ const Syllabus = () => {
                       <button
                         className=""
                         onClick={() => {
-                          handleSaveTitle(index)
+                          handleSaveTitle(index, each)
                         }}
                         key={index}
                       >
@@ -166,7 +161,7 @@ const Syllabus = () => {
                     )}
                     <button
                       onClick={() => {
-                        handleRemoveTitle(index)
+                        handleRemoveTitle(index, each)
                       }}
                     >
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

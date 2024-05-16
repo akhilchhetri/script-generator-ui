@@ -57,7 +57,7 @@ const ChatComponent = () => {
     setText(e?.target?.value)
   }
   return (
-    <div className="absolute right-0 top-0 z-[120] mt-2 flex h-full w-full flex-col items-start rounded-[20px] bg-white shadow-md">
+    <div className="absolute right-0 top-0 z-[120] mt-0 md:mt-2 flex h-full w-full flex-col items-start rounded-[20px] bg-white shadow-md">
       <div
         className="seld-start m-3 flex h-[40px] w-[40px] cursor-pointer flex-col items-center justify-center rounded-full border-[3px] p-[10px]"
         onClick={() => setShowChat(false)}

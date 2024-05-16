@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { toast } from "react-toastify"
 import { useAppContext } from "app/context/AppContext"
+import { baseUrl } from "app/services/callapi"
 const menus = [
   { id: 1, name: "Syllabus" },
   { id: 2, name: "Teaching Script" },
@@ -37,7 +38,7 @@ const Sidebar = () => {
     }
   }, [selectedFile])
   const handleFileChange = async (e: any) => {
-    setSelectedFile(undefined)
+    setSelectedFile(undefined)  
     setSelectedFile(e?.target.files[0])
   }
 
@@ -46,7 +47,7 @@ const Sidebar = () => {
     formData.append("files", selectedFile)
 
     try {
-      const response = await axios.post("http://13.40.134.77:8000/upload", formData, {
+      const response = await axios.post(`${baseUrl}/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -84,7 +85,7 @@ const Sidebar = () => {
     toast.success("File removed!")
   }
   return (
-    <div className="fixed  h-[100vh] w-[25vw]  md:w-[20vw] lg:w-[15vw]">
+    <div className="fixed  h-[100vh] w-[25vw] md:w-[25vw] lg:w-[20vw]">
       <Image
         src={"/images/oi.png"}
         width={"100"}
@@ -122,8 +123,8 @@ const Sidebar = () => {
         </div>
       )}
 
-      <div className="relative flex flex-col items-center">
-        <div className="bg-grey-lighter fixed bottom-20 flex  w-[100%] flex-col items-center justify-center gap-4">
+      <div className="relative flex flex-col items-center bg-red-500">
+        <div className="bg-grey-lighter fixed bottom-20 flex w-[100%] flex-col items-center justify-center gap-4">
           {loading && <MoonLoader size={29} color="#66C7C9" />}
           {!file && (
             <label className="flex w-auto cursor-pointer flex-row items-center justify-center gap-1 rounded-lg border bg-[#ACCEF4] p-4  tracking-wide shadow-lg">
