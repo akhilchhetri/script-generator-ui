@@ -4,7 +4,8 @@ import { MoonLoader } from "react-spinners"
 import { toast } from "react-toastify"
 
 import { useAppContext } from "app/context/AppContext"
-import { deleteSyllabus, stopAllPromises, updateSyllabus } from "app/services/callapi"
+import { deleteSyllabus, generateSyllabus,stopAllPromises, updateSyllabus } from "app/services/callapi"
+import { IoIosRefresh } from "react-icons/io"
 const Syllabus = () => {
   const {
     activeMenu,
@@ -37,6 +38,7 @@ const Syllabus = () => {
 
   const handleSaveTitle = async(index:any, each: any) => {
     let updated_content = []
+    toast.success("Updating title.")
     each.name = title
     tableOfContent?.map((e, i) => {
       if (each?.id !== e?.id) {
@@ -64,7 +66,6 @@ const Syllabus = () => {
 
   const handleRemoveTitle = async(index, data) => {
     let updated_content = []
-
     tableOfContent?.map((each, i) => {
       if (index !== i) {
         updated_content.push(each)
@@ -80,28 +81,40 @@ const Syllabus = () => {
       localStorage.setItem("documentData", JSON.stringify(documentData))
     }
   }
+  const handleRegenerate = async()=>{
+    try{
+      setLoading(true)
+      let temp = documentData
+      setDocumentData(undefined)
+      toast.success("Generating Syllabus")
+      const result = await generateSyllabus(documentId)
+      if(result?.success){
+        setDocumentData(result?.data || temp)
+        localStorage.setItem("documentData", JSON.stringify(documentData))
+        toast.success("Syllabus Regenerated")
+        setLoading(false)
+      }else{
+        toast.error("Error generating Syllabus")
+        setLoading(false)
+      }
+    }catch(e){
+      console.log("this is e", e)
+    }
+  }
 
   return (
-    <div className="relative ml-5 flex flex-col items-start">
-      <h1 className="hidden md:block text-left text-[28px] font-[800] leading-[35.78px] text-[#404040]">Syllabus</h1>
-      {showUpdate && (
+    <div className="relative ml-3 flex flex-col items-start">
+      <h1 className="hidden text-left text-[28px] font-[800] leading-[35.78px] text-[#404040] md:block">Syllabus</h1>
+      {!loading && (
         <button
-          className="mt-2 rounded-[15px] bg-[#66C7C9] px-3 py-2 text-[16px] font-[700] text-white"
+          className="mt-2 flex max-w-[250px] flex-row items-center justify-around gap-2 rounded-[15px] bg-[#66C7C9] p-1 md:px-3 md:py-2 text-[16px] font-[700] text-white"
+          onClick={() => handleRegenerate()}
         >
-          {showUpdate && (
-            <>
-              {loading ? (
-                <div className="flex flex-row items-center gap-2">
-                  <span>Updating</span>
-                  <MoonLoader size={"16"} />
-                </div>
-              ) : (
-                "Save Changes"
-              )}
-            </>
-          )}
+          <IoIosRefresh size={24} />
+          <span className="hidden md:block">Regenerate</span>
         </button>
       )}
+
       <div className="mt-6 flex flex-col items-start gap-2">
         {documentData && documentData?.document_id && (
           <>
@@ -112,7 +125,7 @@ const Syllabus = () => {
                     {index + 1}
                   </span>
                   {editId !== index && (
-                    <span className="text-[16px] text-left font-[800] text-[#404040]">
+                    <span className="text-left text-[16px] font-[800] text-[#404040]">
                       {each?.name?.slice(0, 70)}
                       {each?.name?.length > 69 ? " ..." : ""}
                     </span>

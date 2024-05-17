@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io"
+import { IoIosArrowDropdown, IoIosArrowDropup, IoIosRefresh } from "react-icons/io"
 import { MoonLoader } from "react-spinners"
 import { count } from "console"
 import { useAppContext } from "app/context/AppContext"
 import { generateEvaluation, generateScript, stopAllPromises } from "app/services/callapi"
 import Image from "next/image"
+import { toast } from "react-toastify"
 
 
 const Evaluation = () => {
@@ -84,6 +85,7 @@ const Evaluation = () => {
     if (script && script?.length > 0) {
       localStorage.removeItem("eq")
       setScript([])
+      toast.success("Regenerating script")
       processArraySequentially()
     }
   }
@@ -91,7 +93,16 @@ const Evaluation = () => {
     <div className="px-auto flex h-full flex-col items-start md:px-3">
       <>
         <div className="mx-auto flex w-[90%] flex-row items-center justify-between md:hidden">
-          <h1 className="font-montHeavy text-[14px] leading-[18px] text-[#6E808E]">Your Questions</h1>
+          <div className="flex flex-row items-center justify-around gap-2">
+            <h1 className="font-montHeavy text-[14px] leading-[18px] text-[#6E808E]">Your Questions</h1>
+            <button
+              className="flex max-w-[250px] flex-row items-center justify-around gap-2 rounded-[15px] bg-[#66C7C9] p-1 text-[16px] font-[700] text-white md:px-3 md:py-2"
+              onClick={() => handleRegenerate()}
+            >
+              <IoIosRefresh size={24} />
+              <span className="hidden md:block">Regenerate</span>
+            </button>
+          </div>
           <div className="flex flex-row items-center gap-2">
             <button className="h-auto w-auto rounded-[10px] bg-[#83D5D6] p-[10px]">
               <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,13 +124,14 @@ const Evaluation = () => {
             </button>
           </div>
         </div>
-        <div className="hidden md:flex flex-col">
+        <div className="hidden flex-col md:flex">
           <h1 className="text-left text-[28px] font-[800] leading-[35.78px] text-[#404040]">Evaluation Questions</h1>
           {script && script?.length > 0 && !headingLoading && (
             <button
-              className="mt-2 rounded-[15px] bg-[#66C7C9] px-3 py-2 text-[16px] font-[700] text-white"
+              className="mt-2 flex max-w-[200px] flex-row items-center justify-around rounded-[15px] bg-[#66C7C9] px-3 py-2 text-[16px] font-[700] text-white"
               onClick={() => handleRegenerate()}
             >
+              <IoIosRefresh size={24} />
               Regenerate Script
             </button>
           )}
@@ -134,9 +146,6 @@ const Evaluation = () => {
       <div className="flex w-full flex-col items-start gap-2">
         {documentData && documentData?.document_id && (
           <>
-            {/* {script?.map((each, index) => {
-              return <ScriptComponent data={each} key={index} />
-            })} */}
             <div className="mt-5 flex h-full flex-col items-start gap-2 md:mt-10">
               {documentData && documentData?.document_id && (
                 <>

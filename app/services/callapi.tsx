@@ -10,6 +10,7 @@ const source = CancelToken.source()
 // })
 
 export const baseUrl = "http://13.40.134.77:8000"
+// export const baseUrl = "http://localhost:8000"
 
 const Axios = axios.create({
   baseURL: baseUrl,
@@ -27,6 +28,18 @@ export const stopAllPromises = async () => {
   axios.interceptors.request.eject(requestInterceptor)
   // Cancel the token to stop all pending requests
   source.cancel("All requests canceled")
+}
+export const generateSyllabus =async(documentId:any)=>{
+  try {
+    const response = await Axios.get(`/syllabus/get?document_id=${documentId}`)
+    if (response?.status === 200 && response?.data) {
+      return response?.data
+    } else {
+      return { success: false }
+    }
+  } catch (e) {
+    return { success: false }
+  }
 }
 export const generateScript = async (data: any) => {
   try {

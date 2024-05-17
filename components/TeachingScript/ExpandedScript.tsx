@@ -18,24 +18,16 @@ const ExpandedScript = ({ documentId, showChat, activeScript, setExpandedTs }: a
     const result = await updateScript(payload, activeScript?.id)
     if (result?.success) {
       toast.success("Script updated successfully")
-      const data = {
-        heading: activeScript?.heading,
-        script: result?.data?.script || activeScript,
-      }
+      const data = {heading: activeScript?.heading, id: activeScript?.id, script: script}
       setActiveScript(data)
-      let d: { heading: any; script: any }[] = []
+      // let d: { heading: any; script: any }[] = []
       ts.map(async (each: any, index: any) => {
         if (index === eachIndex) {
-          let a = {
-            heading: activeScript?.heading,
-            script: result?.data?.script || activeScript,
-          }
-          d.push(a)
+          ts[index]= data
         }
-        d.push(each)
       })
-      setTs(d)
-      localStorage.setItem("teaching_script", JSON.stringify(d))
+      setTs(ts)
+      localStorage.setItem("teaching_script", JSON.stringify(ts))
     }else{
       toast.error("Error occured, Try again.")
     }
