@@ -11,84 +11,66 @@ import { toast } from "react-toastify"
 const Evaluation = () => {
   const { documentData, tableOfContent, documentId, fullView, setFullView, setActiveScript, setExpandedEv } =
     useAppContext()
-  let sc = JSON.parse(localStorage.getItem("eq"))
-  const [script, setScript] = useState(sc || [])
-  const [array, setArray] = useState(tableOfContent)
-  const [count, setCount] = useState(array ? array?.length : 0)
-  const [headingLoading, setHeadingLoading] = useState(false)
-  const [activeHeading, setActiveHeading] = useState(
-    tableOfContent?.length > 0 ? tableOfContent[0]?.id : undefined
-  )
-  const [nextHeading, setNextHeading] = useState(tableOfContent?.length > 0 ? tableOfContent[0]?.name : undefined)
-  const [lastElement, setLastElement] = useState(
-    tableOfContent?.length > 0 ? tableOfContent[tableOfContent?.length - 1] : undefined
-  )
+    let sc = JSON.parse(localStorage.getItem("eq"))
+    const [script, setScript] = useState(sc || [])
+    const [headingLoading, setHeadingLoading] = useState(false)
+    const [activeHeading, setActiveHeading] = useState(
+      tableOfContent?.length > 0 ? tableOfContent[0]?.name : undefined
+    )
+    const [nextHeading, setNextHeading] = useState(tableOfContent?.length > 0 ? tableOfContent[0]?.name : undefined)
+    let count = 0
+    useEffect(() => {
+      if (script?.length < 1 && tableOfContent && tableOfContent?.length > 0) {
+        makeRequests()
+      }
+    }, [tableOfContent])
 
-
-  useEffect(() => {
-    if (script && script?.length > 0) {
-      localStorage.setItem("eq", JSON.stringify(script))
+    const makeRequests = async () => {
+      console.time(".map()")
+      setHeadingLoading(true)
+      await Promise.all(
+        tableOfContent?.map(async (each: any, index: any) => {
+          setActiveHeading(each?.heading)
+          let data = await callApi(each?.id)
+          setNextHeading(tableOfContent[index + 1]?.name)
+          let result = {
+            heading: each?.name,
+            heading_id: each?.id,
+            script: data,
+          }
+          setScript((ps: any) => [...ps, result])
+        })
+      )
+      setHeadingLoading(false)
+      console.timeEnd(".map()")
     }
-  }, [script])
+    useEffect(() => {
+      if (script && script?.length > 0) {
+        localStorage.setItem("eq", JSON.stringify(script))
+      }
+    }, [script])
 
-
-  const callApi = async (each: any) => {
-    try {
-      if (script?.length !== array?.length) {
+    const callApi = async (heading_id:any) => {
+      try {
         const data = {
-          heading_id: each?.id,
-          document_id: documentId,
+          heading_id: heading_id,
+          document_id: documentId || documentData?.documentId,
         }
         let result = await generateEvaluation(data)
         if (result?.success) {
-          let temp = {heading_id: each?.id, heading: each?.name, data:result?.data}
-          setScript((ps: any) => [...ps, temp])
-          setActiveHeading(each?.name)
           return result?.data
         }
-      } else {
-        setHeadingLoading(false)
-        return undefined
-      }
-    } catch (e) {
-      return undefined
-    }
-  }
-  const processArraySequentially = async () => {
-    setCount(array?.length)
-    for (const item of array) {
-      if (array?.length != script?.length) {
-        setHeadingLoading(true)
-        const data = await callApi(item)
-        if (item?.id === lastElement?.id) {
-          setActiveHeading(undefined)
-          setHeadingLoading(false)
-          setNextHeading(undefined)
-        }
-        if (data) {
-          setNextHeading(item?.name)
-        }
-      } else {
-        setHeadingLoading(false)
+      } catch (e) {
+        console.log("error", e)
       }
     }
-    setHeadingLoading(false)
-  }
-  useEffect(() => {
-    if (script?.length < 1) {
-      setHeadingLoading(true)
-      processArraySequentially()
-      setHeadingLoading(false)
+    const handleRegenerate = async () => {
+      if (script && script?.length > 0) {
+        localStorage.removeItem("eq")
+        setScript([])
+        await makeRequests()
+      }
     }
-  }, [])
-  const handleRegenerate = () => {
-    if (script && script?.length > 0) {
-      localStorage.removeItem("eq")
-      setScript([])
-      toast.success("Regenerating script")
-      processArraySequentially()
-    }
-  }
   return (
     <div className="px-auto flex h-full flex-col items-start md:px-3">
       <>
@@ -203,10 +185,10 @@ const ScriptComponent = ({ data, key, setActiveScript, setExpandedEv }: any) => 
         <h1 className="mt-4 text-left text-[16px] font-[700] text-[#80909C] md:mt-[45px] md:text-[22px]">
           {data?.heading?.slice(0, 45)}
         </h1>
-        <p className="pb-3 text-left text-[12px] font-[800] leading-[20px] text-[#80909C]">
+        {/* <p className="pb-3 text-left text-[12px] font-[800] leading-[20px] text-[#80909C]">
           {data?.script?.slice(0, 100)}
-        </p>
-        <h2 className="text-left text-[12px] font-[800] text-[#80909C]">{data?.data?.length} Questions</h2>
+        </p> */}
+        <h2 className="text-left text-[12px] font-[800] text-[#80909C]">{data?.script?.length} Questions</h2>
         <button
           onClick={() => {
             setActiveScript(data)

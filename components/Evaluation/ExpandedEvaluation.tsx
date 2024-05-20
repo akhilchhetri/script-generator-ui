@@ -17,7 +17,9 @@ const ExpandedEvaluation = ({ showChat, activeScript, setExpandedEv, setActiveSc
         let removed = await temp?.splice(index,1)
        }
      })
-     await setActiveScript((ps)=>({...ps, data: [...temp]}))
+  
+    await setActiveScript((ps)=>({...ps, script: [...temp]}))
+
      scriptToUpdate.map(async (eachScript: any, index: any) => {
        if (eachScript?.heading_id === activeScript?.heading_id) {
          scriptToUpdate[index] = activeScript
@@ -75,15 +77,15 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
   const [questionId, setQuestionId] = useState(undefined)
   const handleEvaluationScriptUpdate = async (payload: any, scriptIndex: any, question_id:any) => {
     let scriptToUpdate= script
-      toast.success("Updating, Please wait.")
     const result = await updateQna(payload, question_id)
-    let temp = data?.data
+    let temp = data?.script
     if (result?.success) {
       temp?.map((each: any, index: number) => {
         if (index === scriptIndex) {
           temp[index] = result?.data
         }
       })
+      data.script = temp
       setActiveScript(data)
       scriptToUpdate.map(async (eachScript: any, index: any) => {
         if (eachScript?.heading_id === data?.heading_id) {
@@ -100,7 +102,7 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
  
   return (
     <div className="">
-      {data?.data?.map((each: any, index: any) => {
+      {data?.script?.map((each: any, index: any) => {
         return (
           <div key={index}>
             {each?.type === "QNA" && (

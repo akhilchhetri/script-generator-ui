@@ -22,78 +22,64 @@ const TeachingScript = () => {
     eachIndex,
     setEachIndex,
   } = useAppContext()
-  const teaching_script = JSON.parse(localStorage.getItem("teaching_script"))
-  const [script, setScript] = useState(teaching_script?.length > 0 ? teaching_script : [])
-  const [headingLoading, setHeadingLoading] = useState(false)
-  const [array, setArray] = useState(tableOfContent)
-  const [count, setCount] = useState(array? array?.length : 0)
-  const [index, setIndex] = useState(0)
-  const [activeHeading, setActiveHeading] = useState(
-    tableOfContent?.length > 0 ? tableOfContent[0]?.heading : undefined
-  )
-  const [lastElement, setLastElement] = useState(tableOfContent?.length > 0 ? tableOfContent[tableOfContent?.length-1]: undefined)
-  const [nextHeading, setNextHeading] = useState(tableOfContent?.length > 0 ? tableOfContent[0]?.name : undefined)
-  
-  useEffect(() => {
-    if (script && script?.length > 0) {
-      localStorage.setItem("teaching_script", JSON.stringify(script))
-    }
-  }, [script])
-
-  const callApi = async (each:any) => {
-    try {
-      if(script?.length!==array?.length){
-        const data = {
-          heading_id: each?.id,
-          document_id: documentId,
-        }
-        let result = await generateScript(data)
-        if (result?.success) {
-          setScript((ps:any) => [...ps, result?.data])
-          setActiveHeading(each?.name)
-          return result?.data
-        }
-       
-      }else{
-        setHeadingLoading(false)
-        return undefined
-      }
-    } catch (e) {
-      return undefined
-    }
-  }
-   const processArraySequentially = async () => {
-    setCount(array?.length)
-     for (const item of array) {
-      if(array?.length!=script?.length){
-        setHeadingLoading(true)
-        const data = await callApi(item)
-         if (item?.id === lastElement?.id) {
-           setActiveHeading(undefined)
-           setHeadingLoading(false)
-           setNextHeading(undefined)
-         }
-        if(data){
-          setNextHeading(item?.name)
-        }
-      }else{
-        setHeadingLoading(false)
-      }
+   const teaching_script = JSON.parse(localStorage.getItem("teaching_script"))
+   const [script, setScript] = useState(teaching_script?.length > 0 ? teaching_script : [])
+   const [headingLoading, setHeadingLoading] = useState(false)
+   const [index, setIndex] = useState(0)
+   const [activeHeading, setActiveHeading] = useState(
+     tableOfContent?.length > 0 ? tableOfContent[0]?.name : undefined
+   )
+   const [nextHeading, setNextHeading] = useState(tableOfContent?.length > 0 ? tableOfContent[0]?.name : undefined)
+   let count = 0
+   useEffect(() => {
+     if (script?.length < 1 && tableOfContent && tableOfContent?.length > 0) {
+       makeRequests()
      }
+   }, [tableOfContent])
+   const makeRequests = async () => {
+     console.time(".map()")
+     setHeadingLoading(true)
+     await Promise.all(
+       tableOfContent?.map(async (each: any, index: any) => {
+         setActiveHeading(each?.heading)
+         let data = await callApi(each?.heading, each?.id)
+         setNextHeading(tableOfContent[index + 1]?.name)
+         if (data) {        
+           setScript((ps: any) => [...ps, data])
+         }
+       })
+     )
      setHeadingLoading(false)
+     console.timeEnd(".map()")
    }
-   useEffect(()=>{
-    if(script?.length<1){
-      setHeadingLoading(true)
-      processArraySequentially()
-      setHeadingLoading(false)
-    }
-   },[])
-  const handleRegenerate = () => {
-      localStorage.removeItem("teaching_script")
-      setScript([])
-      processArraySequentially()
-  }
+   useEffect(() => {
+     if (script && script?.length > 0) {
+       localStorage.setItem("teaching_script", JSON.stringify(script))
+     }
+   }, [script])
+
+   const callApi = async (activeHeading: any, heading_id:any) => {
+     try {
+       const data = {
+         heading_id:heading_id,
+         document_id: documentId || documentData?.documentId,
+       }
+       let result = await generateScript(data)
+       if (result?.success) {
+         return result?.data
+       }
+     } catch (e) {
+       console.log("error", e)
+     }
+   }
+
+   const handleRegenerate = () => {
+     if (script && script?.length > 0) {
+       localStorage.removeItem("teaching_script")
+       setScript([])
+       makeRequests()
+     }
+   }
   return (
     <div className="px-auto flex h-full flex-col items-start md:px-3">
       {expandedTs && <ExpandedScript activeScript={activeScript} setExpandedTs={setExpandedTs} />}
