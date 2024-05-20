@@ -19,6 +19,7 @@ const ChatComponent = () => {
       const data = {
         query: temp,
         document_id: documentId,
+        heading_id:""
       }
       const result = await sendMessage(data)
       setLoading(false)
