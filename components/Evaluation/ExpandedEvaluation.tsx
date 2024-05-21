@@ -11,25 +11,30 @@ const ExpandedEvaluation = ({ showChat, activeScript, setExpandedEv, setActiveSc
     let scriptToUpdate = script
      const result = await deleteQna(data?.id)
      if (result?.success) {
-    let temp = activeScript?.data
-    temp?.map(async(each: any, index: number) => {
-       if(each?.id===data?.id){
-        let removed = await temp?.splice(index,1)
-       }
-     })
-  
-    await setActiveScript((ps)=>({...ps, script: [...temp]}))
+        let temp = activeScript?.script
+        temp?.map(async(each: any, index: number) => {
+          if(each?.id===data?.id){
+            let removed = await temp?.splice(index,1)
+          }
+        })
+        let dat ={
+          heading_id: activeScript?.heading_id, 
+          heading: activeScript?.heading, 
+          script: temp
+        }
+        // setActiveScript((ps)=>({...ps, script: [...temp]}))
 
-     scriptToUpdate.map(async (eachScript: any, index: any) => {
-       if (eachScript?.heading_id === activeScript?.heading_id) {
-         scriptToUpdate[index] = activeScript
-       }
-     })
-     localStorage.setItem("eq", JSON.stringify(scriptToUpdate))
-     setScript(scriptToUpdate)
-     toast.success("Question deleted")
+        scriptToUpdate.map(async (eachScript: any, index: any) => {
+          if (eachScript?.heading_id === activeScript?.heading_id) {
+            scriptToUpdate[index] = dat
+          }
+        })
+        setActiveScript(dat)
+        setScript(scriptToUpdate)
+        localStorage.setItem("eq", JSON.stringify(scriptToUpdate))
+        toast.success("Question deleted")
      }else{
-      toast.error("Error deleting question")
+      toast.error(result?.error?.message || "Error deleting question")
      }
    }
   
@@ -104,9 +109,10 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
     <div className="">
       {data?.script?.map((each: any, index: any) => {
         return (
-          <div key={index}>
+          <div key={each?.id}>
             {each?.type === "QNA" && (
               <SAQComponent
+                key={each?.id}
                 data={each}
                 scriptIndex={index}
                 setQuestionId={setQuestionId}
@@ -114,7 +120,7 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
                 deleteQuestion={deleteQuestion}
               />
             )}
-            {each?.type === "MCQ" && <MCQComponent data={each} scriptIndex={index} handleEvaluationScriptUpdate={handleEvaluationScriptUpdate} setQuestionId={setQuestionId} deleteQuestion={deleteQuestion}/>}
+            {each?.type === "MCQ" && <MCQComponent key={each?.id} data={each} scriptIndex={index} handleEvaluationScriptUpdate={handleEvaluationScriptUpdate} setQuestionId={setQuestionId} deleteQuestion={deleteQuestion}/>}
           </div>
         )
       })}
@@ -122,7 +128,7 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
   )
 }
 
-const SAQComponent = ({ data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
+const SAQComponent = ({key,data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
   const [showEdit, setShowEdit] = useState(true)
   const [question, setQuestion] = useState(data?.question || undefined)
   const [qid, setQid]= useState(data?.id || undefined)
@@ -143,7 +149,7 @@ const SAQComponent = ({ data, scriptIndex, handleEvaluationScriptUpdate, deleteQ
   }
 
   return (
-    <div className="mb-1 mt-2 w-full">
+    <div className="mb-1 mt-2 w-full" key={key}>
       <div>
         <h1>
           Question <span className="text-[12px] font-[800] underline">QNA</span>
@@ -241,7 +247,7 @@ const SAQComponent = ({ data, scriptIndex, handleEvaluationScriptUpdate, deleteQ
   )
 }
 
-const MCQComponent = ({ data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
+const MCQComponent = ({key, data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
   const [showEdit, setShowEdit] = useState(true)
   const [question, setQuestion] = useState(data?.question || undefined)
   const [hint, setHint] = useState(data?.hint || undefined)
@@ -270,7 +276,7 @@ const MCQComponent = ({ data, scriptIndex, handleEvaluationScriptUpdate, deleteQ
   }
   
   return (
-    <div className="mb-1 mt-2 w-full">
+    <div className="mb-1 mt-2 w-full" key={key}>
       <div>
         <h1>
           Question <span className="text-[12px] font-[800] underline">MCQ</span>
