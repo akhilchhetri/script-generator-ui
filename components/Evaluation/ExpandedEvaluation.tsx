@@ -1,60 +1,136 @@
-import { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { TiTick } from "react-icons/ti"
 import { toast } from "react-toastify"
-import {deleteQna, updateQna  } from "app/services/callapi"
+import { deleteQna, updateQna } from "app/services/callapi"
 import { MdDelete } from "react-icons/md"
+import { FaFileDownload } from "react-icons/fa"
+import { MdClose } from "react-icons/md"
+import ReactToPrint from "react-to-print"
+
 
 const ExpandedEvaluation = ({ showChat, activeScript, setExpandedEv, setActiveScript, documentId }: any) => {
   let sc = JSON.parse(localStorage.getItem("eq"))
   const [script, setScript] = useState(sc || [])
+
+  // new
+  // ref
+  const componentRef = useRef(null)
+  const onBeforeGetContentResolve = React.useRef(null)
+
+  // new
+  const [loading, setLoading] = React.useState(false)
+  const [text, setText] = React.useState("old boring text")
+
   const deleteQuestion = async (data: any, scriptIndex: any) => {
     let scriptToUpdate = script
-     const result = await deleteQna(data?.id)
-     if (result?.success) {
-        let temp = activeScript?.script
-        temp?.map(async(each: any, index: number) => {
-          if(each?.id===data?.id){
-            let removed = await temp?.splice(index,1)
-          }
-        })
-        let dat ={
-          heading_id: activeScript?.heading_id, 
-          heading: activeScript?.heading, 
-          script: temp
+    const result = await deleteQna(data?.id)
+    if (result?.success) {
+      let temp = activeScript?.script
+      temp?.map(async (each: any, index: number) => {
+        if (each?.id === data?.id) {
+          let removed = await temp?.splice(index, 1)
         }
-        // setActiveScript((ps)=>({...ps, script: [...temp]}))
+      })
+      let dat = {
+        heading_id: activeScript?.heading_id,
+        heading: activeScript?.heading,
+        script: temp,
+      }
+      // setActiveScript((ps)=>({...ps, script: [...temp]}))
 
-        scriptToUpdate.map(async (eachScript: any, index: any) => {
-          if (eachScript?.heading_id === activeScript?.heading_id) {
-            scriptToUpdate[index] = dat
-          }
-        })
-        setActiveScript(dat)
-        setScript(scriptToUpdate)
-        localStorage.setItem("eq", JSON.stringify(scriptToUpdate))
-        toast.success("Question deleted")
-     }else{
+      scriptToUpdate.map(async (eachScript: any, index: any) => {
+        if (eachScript?.heading_id === activeScript?.heading_id) {
+          scriptToUpdate[index] = dat
+        }
+      })
+      setActiveScript(dat)
+      setScript(scriptToUpdate)
+      localStorage.setItem("eq", JSON.stringify(scriptToUpdate))
+      toast.success("Question deleted")
+    } else {
       toast.error(result?.error?.message || "Error deleting question")
-     }
-   }
-  
+    }
+  }
+
+  //  new download
+  const ReactToPrintTrigger = React.useCallback(() => {
+    // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
+    // to the root node of the returned component as it will be overwritten.
+
+    // Bad: the `onClick` here will be overwritten by `react-to-print`
+    // return <button onClick={() => alert('This will not work')}>Print this out!</button>;
+
+    // Good
+    return (
+      <button className="absolute top-[-10px] flex flex-row items-center gap-2 rounded-sm bg-[#6E808E] px-2 text-[#66C7C9]">
+        <FaFileDownload color="#66C7C9" size="12" />
+        Download as PDF
+      </button>
+    ) // eslint-disable-line max-len
+  }, [])
+
+  const reactToPrintContent = useCallback(() => {
+    return componentRef.current
+  }, [componentRef.current])
+  const handleAfterPrint = useCallback(() => {
+    console.log("`onAfterPrint` called")
+  }, [])
+  const handleOnBeforeGetContent = useCallback(() => {
+    console.log("`onBeforeGetContent` called")
+    // setLoading(true)
+    toast.success("Generating PDF, Please wait..")
+    // setText("Loading new text...")
+
+    return new Promise((resolve) => {
+      onBeforeGetContentResolve.current = resolve
+      setTimeout(() => {
+        setLoading(false)
+        setText("")
+        resolve()
+      }, 2000)
+    })
+  }, [setLoading, setText])
+  const handleBeforePrint = useCallback(() => {
+    console.log("`onBeforePrint` called")
+  }, [])
+  useEffect(() => {
+    if (text === "New, Updated Text!" && typeof onBeforeGetContentResolve.current === "function") {
+      onBeforeGetContentResolve.current()
+    }
+  }, [onBeforeGetContentResolve.current, text])
+
   return (
     <div className={`${showChat ? "w-[63%]" : "w-full"} relative h-full`}>
-      <div className={`expanded-script h-full overflow-y-hidden rounded-[20px] bg-white px-4 shadow-lg`}>
+      <ReactToPrint
+        content={reactToPrintContent}
+        documentTitle={activeScript?.heading || "This is title"}
+        onAfterPrint={handleAfterPrint}
+        onBeforeGetContent={handleOnBeforeGetContent}
+        onBeforePrint={handleBeforePrint}
+        removeAfterPrint
+        trigger={ReactToPrintTrigger}
+      />
+      <div
+        ref={componentRef}
+        className={`expanded-script h-full overflow-y-hidden rounded-[20px] bg-white px-4 shadow-lg`}
+      >
         <div className="flex w-full flex-row items-center justify-between  py-3 pl-4">
           <h1 className="text-left text-[24px] font-[800] leading-[30.67px] text-[#6E808E]">
             {activeScript?.heading?.slice(0, 100)}
           </h1>
-          <div className="cursor-pointer" onClick={() => setExpandedEv((ps: any) => !ps)}>
-            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M13.125 18.9583L17.5 23.3333M17.5 23.3333L21.875 18.9583M17.5 23.3333V11.6667M30.625 17.5C30.625 10.2513 24.7487 4.375 17.5 4.375C10.2513 4.375 4.375 10.2513 4.375 17.5C4.375 24.7487 10.2513 30.625 17.5 30.625C24.7487 30.625 30.625 24.7487 30.625 17.5Z"
-                stroke="#66C7C9"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+          <div className="flex flex-row items-center justify-around">
+            <div
+              className="cursor-pointer rounded-full border-2 border-[#66C7C9] p-[6px]"
+              onClick={() => setExpandedEv((ps: any) => !ps)}
+            >
+              <MdClose color="#66C7C9" size="12" fontWeight={800} />
+            </div>
+            <div
+              className="ml-2 cursor-pointer rounded-full border-2 border-[#66C7C9] p-[6px]"
+              onClick={() => setExpandedEv((ps: any) => !ps)}
+            >
+              <FaFileDownload color="#66C7C9" size="12" />
+            </div>
           </div>
         </div>
         <div className="max-h-[77vh] w-full overflow-y-scroll rounded-[25px] bg-[#E3ECF3] px-5 py-3 pb-5 pt-4 text-left text-[16px] font-[800] leading-[28px] text-[#6E808E]">
@@ -71,17 +147,26 @@ const ExpandedEvaluation = ({ showChat, activeScript, setExpandedEv, setActiveSc
           />
         </div>
       </div>
-     
     </div>
   )
 }
 
 export default ExpandedEvaluation
 
-const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, heading, documentId, script, setScript, deleteQuestion }: any) => {
+const QuestionComponent = ({
+  data,
+  heading_id,
+  activeScript,
+  setActiveScript,
+  heading,
+  documentId,
+  script,
+  setScript,
+  deleteQuestion,
+}: any) => {
   const [questionId, setQuestionId] = useState(undefined)
-  const handleEvaluationScriptUpdate = async (payload: any, scriptIndex: any, question_id:any) => {
-    let scriptToUpdate= script
+  const handleEvaluationScriptUpdate = async (payload: any, scriptIndex: any, question_id: any) => {
+    let scriptToUpdate = script
     const result = await updateQna(payload, question_id)
     let temp = data?.script
     if (result?.success) {
@@ -97,14 +182,14 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
           scriptToUpdate[index] = data
         }
       })
-      localStorage.setItem('eq', JSON.stringify(scriptToUpdate))
+      localStorage.setItem("eq", JSON.stringify(scriptToUpdate))
       setScript(scriptToUpdate)
       toast.success("Question updated")
-    }else{
+    } else {
       toast.error("Error occured while updating.")
     }
   }
- 
+
   return (
     <div className="">
       {data?.script?.map((each: any, index: any) => {
@@ -120,7 +205,16 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
                 deleteQuestion={deleteQuestion}
               />
             )}
-            {each?.type === "MCQ" && <MCQComponent key={each?.id} data={each} scriptIndex={index} handleEvaluationScriptUpdate={handleEvaluationScriptUpdate} setQuestionId={setQuestionId} deleteQuestion={deleteQuestion}/>}
+            {each?.type === "MCQ" && (
+              <MCQComponent
+                key={each?.id}
+                data={each}
+                scriptIndex={index}
+                handleEvaluationScriptUpdate={handleEvaluationScriptUpdate}
+                setQuestionId={setQuestionId}
+                deleteQuestion={deleteQuestion}
+              />
+            )}
           </div>
         )
       })}
@@ -128,10 +222,10 @@ const QuestionComponent = ({ data,heading_id,activeScript, setActiveScript, head
   )
 }
 
-const SAQComponent = ({key,data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
+const SAQComponent = ({ key, data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
   const [showEdit, setShowEdit] = useState(true)
   const [question, setQuestion] = useState(data?.question || undefined)
-  const [qid, setQid]= useState(data?.id || undefined)
+  const [qid, setQid] = useState(data?.id || undefined)
   const [hint, setHint] = useState(data?.hint || undefined)
   const [answer, setAnswer] = useState(data?.answer)
 
@@ -141,8 +235,8 @@ const SAQComponent = ({key,data, scriptIndex, handleEvaluationScriptUpdate, dele
       question: question,
       hint: hint,
       answer: answer,
-      type:"QNA",
-      option: []
+      type: "QNA",
+      option: [],
     }
     toast.success("Updating question.")
     handleEvaluationScriptUpdate(payload, scriptIndex, qid)
@@ -247,7 +341,7 @@ const SAQComponent = ({key,data, scriptIndex, handleEvaluationScriptUpdate, dele
   )
 }
 
-const MCQComponent = ({key, data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
+const MCQComponent = ({ key, data, scriptIndex, handleEvaluationScriptUpdate, deleteQuestion }: any) => {
   const [showEdit, setShowEdit] = useState(true)
   const [question, setQuestion] = useState(data?.question || undefined)
   const [hint, setHint] = useState(data?.hint || undefined)
@@ -259,22 +353,22 @@ const MCQComponent = ({key, data, scriptIndex, handleEvaluationScriptUpdate, del
     const payload = {
       question: question,
       answer: answer,
-      option:options,
+      option: options,
       hint: hint,
-      type: "MCQ"
+      type: "MCQ",
     }
     handleEvaluationScriptUpdate(payload, scriptIndex, qid)
   }
-  const handleChangeOptions= (data, index)=>{
+  const handleChangeOptions = (data, index) => {
     let changedOptions = options
-    options.map((each, i)=>{
-      if(index===i){
-        changedOptions[i]= data
+    options.map((each, i) => {
+      if (index === i) {
+        changedOptions[i] = data
       }
     })
     setOptions(changedOptions)
   }
-  
+
   return (
     <div className="mb-1 mt-2 w-full" key={key}>
       <div>
@@ -357,7 +451,10 @@ const MCQComponent = ({key, data, scriptIndex, handleEvaluationScriptUpdate, del
                 >
                   <TiTick color="#E5FFFF" size={"26"} />
                 </div>
-                <div className="bottom-[6px] right-3 top-2 flex h-[35px] w-[35px] cursor-pointer flex-row items-center justify-center rounded-full bg-red-500" onClick={()=>deleteQuestion(data, scriptIndex)}>
+                <div
+                  className="bottom-[6px] right-3 top-2 flex h-[35px] w-[35px] cursor-pointer flex-row items-center justify-center rounded-full bg-red-500"
+                  onClick={() => deleteQuestion(data, scriptIndex)}
+                >
                   <MdDelete color="white" />
                 </div>
               </div>

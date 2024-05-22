@@ -1,10 +1,24 @@
-import { useState } from "react"
+import React, { useCallback,useEffect, useRef, useState } from "react"
 import { TiTick } from "react-icons/ti"
 import { toast } from "react-toastify"
 import { useAppContext } from "app/context/AppContext"
 import { updateScript } from "app/services/callapi"
+import { MdClose, MdDownload } from "react-icons/md"
+import { FaFileDownload } from "react-icons/fa"
+import ReactToPrint from "react-to-print"
+
+
 const ExpandedScript = ({ documentId, showChat, activeScript, setExpandedTs }: any) => {
   const [showEdit, setShowEdit] = useState(false)
+  // ref
+  const componentRef = useRef(null)
+  const onBeforeGetContentResolve = React.useRef(null)
+
+  // new
+  const [loading, setLoading] = React.useState(false)
+  const [text, setText] = React.useState("old boring text")
+  
+
   const [script, setScript] = useState(activeScript?.script)
   const { setActiveScript, eachIndex } = useAppContext()
   let sc = JSON.parse(localStorage.getItem("teaching_script"))
@@ -32,16 +46,71 @@ const ExpandedScript = ({ documentId, showChat, activeScript, setExpandedTs }: a
       toast.error("Error occured, Try again.")
     }
   }
+    const ReactToPrintTrigger = React.useCallback(() => {
+      // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
+      // to the root node of the returned component as it will be overwritten.
+
+      // Bad: the `onClick` here will be overwritten by `react-to-print`
+      // return <button onClick={() => alert('This will not work')}>Print this out!</button>;
+
+      // Good
+      return (
+        <button className="absolute top-[-10px] flex flex-row items-center gap-2 rounded-sm bg-[#6E808E] px-2 text-[#66C7C9]">
+          <FaFileDownload color="#66C7C9" size="12" />
+          Download as PDF
+        </button>
+      ) // eslint-disable-line max-len
+    }, [])
+
+  const reactToPrintContent = useCallback(() => {
+    return componentRef.current
+  }, [componentRef.current])
+  const handleAfterPrint = useCallback(() => {
+    console.log("`onAfterPrint` called")
+  }, [])
+  const handleOnBeforeGetContent = useCallback(() => {
+    console.log("`onBeforeGetContent` called")
+    // setLoading(true)
+    toast.success("Generating PDF, Please wait..")
+    // setText("Loading new text...")
+
+    return new Promise((resolve) => {
+      onBeforeGetContentResolve.current = resolve
+      setTimeout(() => {
+        setLoading(false)
+        setText("")
+        resolve()
+      }, 2000)
+    })
+  }, [setLoading, setText])
+  const handleBeforePrint = useCallback(() => {
+    console.log("`onBeforePrint` called")
+  }, [])
+  useEffect(() => {
+    if (text === "New, Updated Text!" && typeof onBeforeGetContentResolve.current === "function") {
+      onBeforeGetContentResolve.current()
+    }
+  }, [onBeforeGetContentResolve.current, text])
+
   return (
     <div className={`relative h-full ${showChat ? "w-[63%]" : "w-full"}`}>
-      <div className={`expanded-script h-full overflow-y-scroll rounded-[20px]  bg-white shadow-lg`}>
+      <ReactToPrint
+        content={reactToPrintContent}
+        documentTitle={activeScript?.heading || "This is title"}
+        onAfterPrint={handleAfterPrint}
+        onBeforeGetContent={handleOnBeforeGetContent}
+        onBeforePrint={handleBeforePrint}
+        removeAfterPrint
+        trigger={ReactToPrintTrigger}
+      />
+      <div ref={componentRef} className={`expanded-script h-full overflow-y-scroll rounded-[20px]  bg-white shadow-lg`}>
         <div className="flex w-full flex-row items-center justify-between py-3 pl-4">
           <h1 className="pl-3 text-left text-[24px] font-[800] leading-[30.67px] text-[#6E808E]">
             {activeScript?.heading?.slice(0, 100)}
           </h1>
-          <div className="flex cursor-pointer flex-row items-center">
+          <div className="flex cursor-pointer flex-row items-center gap-[4px] mr-5">
             <div
-              className={`flex h-[30px] w-[30px] cursor-pointer flex-row items-center justify-center rounded-full bg-[#66C7C9] ${
+              className={`flex h-[29px] w-[29px] cursor-pointer flex-row items-center justify-center rounded-full bg-[#66C7C9] ${
                 showChat ? "right-[6px]" : "right-[7vw]"
               }`}
             >
@@ -66,22 +135,18 @@ const ExpandedScript = ({ documentId, showChat, activeScript, setExpandedTs }: a
                 </div>
               )}
             </div>
-            <svg
-              width="35"
-              height="35"
-              viewBox="0 0 35 35"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+            <div
+              className="cursor-pointer rounded-full border-2 border-[#66C7C9] p-[6px]"
               onClick={() => setExpandedTs((ps: any) => !ps)}
             >
-              <path
-                d="M13.125 18.9583L17.5 23.3333M17.5 23.3333L21.875 18.9583M17.5 23.3333V11.6667M30.625 17.5C30.625 10.2513 24.7487 4.375 17.5 4.375C10.2513 4.375 4.375 10.2513 4.375 17.5C4.375 24.7487 10.2513 30.625 17.5 30.625C24.7487 30.625 30.625 24.7487 30.625 17.5Z"
-                stroke="#66C7C9"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+              <MdClose color="#66C7C9" size="12" fontWeight={800} />
+            </div>
+            {/* <div
+              className="mr-4 cursor-pointer rounded-full border-2 border-[#66C7C9] p-[6px]"
+              onClick={() => handleDownload()}
+            >
+              <FaFileDownload color="#66C7C9" size="12" />
+            </div> */}
           </div>
         </div>
         <div className="px-4 pb-4">
