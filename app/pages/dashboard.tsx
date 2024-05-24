@@ -62,7 +62,6 @@ const Dashboard = () => {
   if (!documentId) {
     return (
       <div className="mx-auto min-h-[100vh] w-[100vw] overflow-x-hidden">
-        {/* <div className="relative flex max-h-[100vh] min-h-[95vh] w-full flex-col items-center justify-between bg-gradient-to-r from-[#C2EFF0] to-white to-100% md:flex-row"> */}
         <div
           id="topLandingChat"
           className="relative flex max-h-[100vh] min-h-[95vh] w-full flex-col items-center justify-between bg-[#BEEAEE] md:flex-row"
@@ -80,34 +79,159 @@ const Dashboard = () => {
               backgroundSize: "contain",
             }}
           ></div>
-          <section className="z-10 h-[50%] w-[90%] overflow-hidden bg-transparent md:h-full md:w-[45%]">
-            <Image
-              src="/images/oi.png"
-              height={"100"}
-              width={"100"}
-              alt="image"
-              className="mx-5 mt-5 w-[20%] cursor-pointer"
-            />
-            <div className="ml-10 mt-10 flex flex-col">
-              <h1 className="font-montHeavy text-[40px] leading-none text-[#404040] md:text-[82px]">
-                Teach Me <br />
-                By{" "}
-                <span className="bg-gradient-to-r from-[#66C8C9] to-[#ACCEF4] bg-clip-text text-transparent">OIAI</span>
-              </h1>
-              <p className="font-montLight mt-5 w-full text-[22px] leading-normal text-[#404040] md:w-[50%]">
-                Upload any PDF or text and let our AI teach you.
-              </p>
+
+          <section className="relative z-10 flex min-h-[100vh] w-full flex-col bg-transparent">
+            <div className="relative flex flex-row">
+              <Image
+                src="/images/oi.png"
+                height={"100"}
+                width={"100"}
+                alt="image"
+                className="mx-5 w-[20%] cursor-pointer p-5 md:w-[10%]"
+              />
+              <div className="absolute top-10 flex w-full flex-col">
+                <h1 className="text-center font-montHeavy text-[38px] leading-none text-[#404040] md:text-[62px]">
+                  Teach Me <br />
+                  By{" "}
+                  <span className="bg-gradient-to-r from-[#66C8C9] to-[#ACCEF4] bg-clip-text text-transparent">
+                    OIAI
+                  </span>
+                </h1>
+                <p className="mt-5 hidden w-full text-center font-montLight text-[22px] leading-normal text-[#404040] md:w-[50%]">
+                  Upload any PDF and let our AI teach you.
+                </p>
+              </div>
             </div>
 
-            <Image
-              src={"/images/chatbot.png"}
-              width={"900"}
-              height={"900"}
-              className="mx-auto hidden w-[70%] md:block"
-              alt="chatbot"
-            />
+            <div className="xlg:m-0 mt-20 min-h-[70vh] w-full flex-col items-center justify-start">
+              <div className="relative h-[60vh] w-full">
+                <Image
+                  src={"/images/chatbot.png"}
+                  width={"900"}
+                  height={"900"}
+                  className="z-[40] mx-auto w-[50%] md:block lg:w-[35%] hidden"
+                  alt="chatbot"
+                />
+                <div className="z-1 hidden md:flex absolute top-5 h-full w-[100%] flex-row items-center justify-around bg-transparent">
+                  <div className="z-1 relative flex h-full w-[30%] flex-col items-center justify-start gap-20">
+                    <div
+                      style={{ backgroundColor: "rgba(255, 255, 255, 0.16)", backdropFilter: "blur(30px)" }}
+                      className="flex h-[210px] w-[70%] flex-row items-center justify-center rounded-[20px] border-4 border-[#C2EFF0] bg-transparent px-10"
+                    >
+                      <h2 className="text-center font-montHeavy text-[18px] text-[#6E808E]">
+                        Teach Me will generate the syllabus to teach
+                      </h2>
+                    </div>
+                    <Image
+                      alt="line"
+                      src="/images/line7.png"
+                      height={100}
+                      width={100}
+                      className="absolute right-[-80px] top-20 w-[200px] rotate-45"
+                    />
+                    <div
+                      style={{ backdropFilter: "blur(5px)" }}
+                      className="relative flex h-[210px] w-[70%] flex-row items-center justify-center rounded-[20px] border-4 border-[#C2EFF0] bg-[#66C7C98C] px-10"
+                    >
+                      <h2 className="text-center font-montHeavy text-[18px] text-[#6E808E]">
+                        Upload your PDF file which contains the content to teach
+                      </h2>
+                    </div>
+                    <Image
+                      alt="line"
+                      src="/images/line7.png"
+                      height={100}
+                      width={100}
+                      className="z-2 absolute bottom-[120px] w-[200px]"
+                      style={{ transform: "rotate(-45deg)", bottom: "200px", right: "-80px", zIndex: "2" }}
+                    />
+                  </div>
+                  <div className="relative flex h-full w-[30%] flex-col items-center justify-start gap-20">
+                    <div
+                      style={{ backdropFilter: "blur(30px)" }}
+                      className="flex h-[210px] w-[70%] flex-row items-center justify-center rounded-[20px] border-4 border-[#C2EFF0] bg-[#66C7C98C] px-10"
+                    >
+                      <h2 className="text-center font-montHeavy text-[18px] text-[#6E808E]">
+                        Generate creative evaluation questions from PDF
+                      </h2>
+                    </div>
+                    <Image
+                      alt="line"
+                      src="/images/line7.png"
+                      height={100}
+                      width={100}
+                      style={{ transform: "rotate(-210deg)", left: "-100px" }}
+                      className="absolute left-0 top-20 w-[200px] rotate-[45]"
+                    />
+
+                    <div
+                      style={{ backgroundColor: "#FFFFFF5C", backdropFilter: "blur(10px)" }}
+                      className="flex h-[210px] w-[70%] flex-row items-center justify-center rounded-[20px] border-4 border-[#C2EFF0] px-10"
+                    >
+                      <h2 className="text-center font-montHeavy text-[18px] text-[#6E808E]">
+                        <h2 className="text-center font-montHeavy text-[18px] text-[#6E808E]">
+                          Generate teaching content from PDF
+                        </h2>
+                      </h2>
+                    </div>
+                    <Image
+                      alt="line"
+                      src="/images/line7.png"
+                      height={100}
+                      width={100}
+                      style={{ transform: "rotate(-145deg)", width:'200px', left: "-100px", bottom:'200px', position:'absolute' }}
+                    />
+                  </div>
+                </div>
+                {/* Mobile */}
+                <MobileTopSection/>
+                <div className="absolute bottom-[-4vh] md:bottom-[-25vh] mx-auto h-auto w-full">
+                  <div className="mx-auto flex h-[30vh] w-[80%] flex-col items-center gap-2 rounded-[20px] bg-[#66C7C9] p-2 md:w-[50%]">
+                    <div className="h-full w-full rounded-[20px] bg-white p-2">
+                      <div className="h-full w-full rounded-[20px] border-2 border-dashed border-[#66C7C9] bg-[#EDF0F3]">
+                        <label
+                          htmlFor="dropzone-file"
+                          className="dark:hover:bg-bray-800 flex h-full w-full cursor-pointer flex-col items-center justify-center"
+                        >
+                          <div className="flex flex-col items-center justify-center pb-6 pt-5">
+                            <svg
+                              width="30"
+                              height="20"
+                              viewBox="0 0 30 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15 15V7.5M15 7.5L11.25 10M15 7.5L18.75 10M28.75 13.75C28.75 10.9886 26.5114 8.75 23.75 8.75C23.7204 8.75 23.6915 8.75026 23.6621 8.75077C23.0559 4.51003 19.4084 1.25 15 1.25C11.5042 1.25 8.48774 3.30005 7.08618 6.26352C3.82758 6.47681 1.25 9.18727 1.25 12.4998C1.25 15.9516 4.04822 18.7501 7.5 18.7501L23.75 18.75C26.5114 18.75 28.75 16.5114 28.75 13.75Z"
+                                stroke="#66C7C9"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                            <div className="my-2 text-center text-[12px] text-[#404040]">
+                              <h2>Drag and drop your file here to upload</h2>
+                              <h2>or</h2>
+                            </div>
+                            <div>
+                              <label className="flex w-auto cursor-pointer flex-row items-center justify-center gap-1 rounded-lg border bg-[#66C7C9] p-2 tracking-wide">
+                                <span className="text-[14px] font-[800] leading-normal text-white">
+                                  Upload PDF File
+                                </span>
+                                <input type="file" className="hidden" onChange={handleFileChange} />
+                              </label>
+                            </div>
+                          </div>
+                          <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
-          <section className="relative z-10 mx-auto flex min-h-[75vh] w-[90%] flex-row items-center justify-center md:w-[45%] ">
+          <section className="relative z-10 mx-auto hidden min-h-[75vh] w-[90%] flex-row items-center justify-center md:w-[45%] ">
             <div className="absolute flex h-full w-[85%] flex-col items-center gap-2 rounded-[20px] bg-[#66C7C9] p-2">
               <div className="h-[60%] w-full rounded-[20px] bg-white p-2">
                 <div className="h-full w-full rounded-[20px] bg-[#EDF0F3]">
@@ -163,6 +287,35 @@ const Dashboard = () => {
 export default Dashboard
 // <div className="h-[100vh] w-[100vw] bg-red-500 bg-gradient-to-r from-teal-300 to-white to-70% md:w-[20vw] lg:w-[15vw]">
 
+const MobileTopSection =()=>{
+  return (
+    <div className="mt-20 flex flex-col items-center justify-around md:hidden">
+      <div className="block h-[10vh] w-full items-start justify-around px-5">
+        <div className="float-left flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#66C7C9]">
+          <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">
+            1. Upload your PDF file which contains the content to teach
+          </h1>
+        </div>
+        <div className="float-right mb-5 flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#C2EFF0]">
+          <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">2. Generate teaching content from PDF</h1>
+        </div>
+      </div>
+
+      <div className="mt-10 block h-[10vh] w-full items-start justify-around px-5">
+        <div className="float-left flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#66C7C9]">
+          <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">
+            3. Teach me will generate syllabus to teach
+          </h1>
+        </div>
+        <div className="float-right mb-5 flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#C2EFF0]">
+          <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">
+            4. Generate creative evaluation questions from PDF
+          </h1>
+        </div>
+      </div>
+    </div>
+  )
+}
 const BelowHeroSection = () => {
   return (
     <div className="relative bg-[#BEEAEE]">
@@ -190,9 +343,9 @@ const BelowHeroSection = () => {
           height={100}
           width={100}
         />
-        <div className="relative z-[2] ml-10 mt-10 flex flex-col pt-20">
-          <h1 className="font-montHeavy mt-5 text-center text-[42px] leading-[60px] text-[#404040] md:text-[62px]">
-            How&nbsp;
+        <div className="relative z-[2] mt-10 flex flex-col pt-20">
+          <h1 className="mt-5 text-center font-montHeavy text-[42px] leading-[60px] text-[#404040] md:text-[62px]">
+            How &nbsp;
             <span className="bg-gradient-to-r from-[#66C8C9] to-[#ACCEF4] bg-clip-text text-transparent">Teach Me</span>
             <br /> Works?
           </h1>
@@ -209,10 +362,10 @@ const BelowHeroSection = () => {
           backgroundSize: "70%",
         }}
       >
-        <div className="flex min-h-[600px] w-full flex-row items-center justify-around pt-[20vh]">
-          <div className="relative h-full w-[50%]">
+        <div className="flex min-h-[600px] w-full flex-row items-center justify-around pb-[20vh] md:pb-0 md:pt-[20vh]">
+          <div className="relative hidden h-full  w-[50%] md:block">
             <div
-              className="relative z-[9] min-h-[700px] max-w-[80%]"
+              className="relative z-[9] min-h-[700px] md:max-w-[80%]"
               style={{
                 backgroundImage: `url('/images/chatdemo.png')`,
                 backgroundPosition: "center",
@@ -221,7 +374,7 @@ const BelowHeroSection = () => {
                 backgroundSize: "contain",
               }}
             ></div>
-            <div className="absolute bottom-0 right-0 z-[8] w-[60%] bg-transparent">
+            <div className="absolute bottom-[10%] right-[30%] z-[8] w-[40%] bg-transparent md:bottom-0 md:right-0 md:w-[60%]">
               <Image
                 src="/images/chatbot3.png"
                 alt="image"
@@ -231,14 +384,14 @@ const BelowHeroSection = () => {
               />
             </div>
           </div>
-          <div className="flex min-h-[663px] w-[50%] flex-col items-center justify-center self-start py-10">
+          <div className="flex min-h-[663px] w-[70%] flex-col items-center justify-center self-start py-10 md:w-[50%]">
             <TeachMeText />
           </div>
         </div>
-        <div className="relative mt-[-12vh]">
+        <div className="relative mt-[-12vh] w-full min-h-[60vh] md:h-auto">
           <Image
             src="/images/shape3.svg"
-            className="relative top-[40%] z-[1] w-full"
+            className="relative top-[40%] z-[1] min-h-[60vh] w-full"
             alt="image"
             height={100}
             width={100}
@@ -308,10 +461,10 @@ const FeatureCard1 = () => {
           boxShadow: "4px 4px 116px 0px rgba(97, 120, 201, 0.16), 2px 2px 16px 0px rgba(255, 255, 255, 0.08) inset",
         }}
       >
-        <h2 className="w-[60%] text-center font-[montHeavy] text-[58px] capitalize leading-[65px] text-[#374957]">
+        <h2 className="w-full md:w-[60%] text-center font-[montHeavy] text-[32px] md:text-[58px] capitalize leading-[65px] text-[#374957]">
           Build by educationalists, not just techies.
         </h2>
-        <span className="font-montHeavy text-center text-[24px] capitalize text-[#80909C]">
+        <span className="font-montHeavy text-center text-[18px] md:text-[24px] capitalize text-[#80909C]">
           Teach Me is built by Otermans Institute (OI) renowned for upskilling learners with less means across 4
           continents and using AI to provide teachers for anyone with a smart device. The founders of OI have taught in
           the United Kingdom and also learners of 9+ countries before using technology to support learners globally. So
@@ -394,8 +547,10 @@ const TeachMeText = () => {
       <div className="my-2 flex flex-row items-start justify-start gap-4">
         <h1 className="font-montHeavy text-[38px] capitalize leading-none text-[#66C7C9]">01</h1>
         <div className="flex flex-col items-start justify-start">
-          <h1 className="font-montHeavy text-[58px] capitalize leading-none text-[#6E808E]">Talk to your pdf</h1>
-          <span className="font-montHeavy mt-3 pl-2 text-[14px] leading-[20px] text-[#6E808E]">
+          <h1 className="font-montHeavy text-[38px] capitalize leading-none text-[#6E808E] md:text-[58px]">
+            Talk to your pdf
+          </h1>
+          <span className="mt-3 pl-2 font-montHeavy text-[14px] leading-[20px] text-[#6E808E]">
             Imagine you can talk to any PDF, be it a research paper or notes from your teacher or just an article you
             want to ready. Teach Me will allow you to speak to the document and learn like learning one-to-one from an
             online teacher.
@@ -405,10 +560,10 @@ const TeachMeText = () => {
       <div className="my-2 flex flex-row items-start justify-start gap-4">
         <h1 className="font-montHeavy text-[38px] capitalize leading-none text-[#66C7C9]">02</h1>
         <div className="flex flex-col items-start justify-start">
-          <h1 className="font-montHeavy text-[58px] capitalize leading-none text-[#6E808E]">
+          <h1 className="font-montHeavy text-[38px] capitalize leading-none text-[#6E808E] md:text-[58px]">
             Clear doubts In Real-Time
           </h1>
-          <span className="font-montHeavy mt-3 pl-2 text-[14px] leading-[20px] text-[#6E808E]">
+          <span className="mt-3 pl-2 font-montHeavy text-[14px] leading-[20px] text-[#6E808E]">
             While learning anything we often have doubts. With Teach Me you can clarify doubts right on the screen and
             ask follow up questions or even request summaries.
           </span>
@@ -417,8 +572,10 @@ const TeachMeText = () => {
       <div className="my-2 flex flex-row items-start justify-start gap-4">
         <h1 className="font-montHeavy text-[38px] capitalize leading-none text-[#66C7C9]">03</h1>
         <div className="flex flex-col items-start justify-start">
-          <h1 className="font-montHeavy text-[58px] capitalize leading-none text-[#6E808E]">Work With An AI Teacher</h1>
-          <span className="font-montHeavy mt-3 pl-2 text-[14px] leading-[20px] text-[#6E808E]">
+          <h1 className="font-montHeavy text-[38px] md:text-[58px] capitalize leading-none text-[#6E808E]">
+            Work With An AI Teacher
+          </h1>
+          <span className="mt-3 pl-2 font-montHeavy text-[14px] leading-[20px] text-[#6E808E]">
             Be it clarifying doubts, or asking to rephrase concepts or practicing scenario based questions on what your
             are learning, Teach Me&apos;s AI teacher has you covered in real-time.
           </span>
@@ -430,12 +587,12 @@ const TeachMeText = () => {
 
 const AiTeach = () => {
   return (
-    <div className="flex h-full w-full flex-row items-center justify-around ">
-      <div className="flex w-[30%] flex-col items-center justify-center">
-        <h1 className="font-montHeavy text-[62px] capitalize leading-[60px] text-[#404040]">
+    <div className="flex h-full w-full flex-col md:flex-row items-center justify-start md:justify-around ">
+      <div className="flex w-[80%] md:w-[30%] flex-row flex-wrap items-center justify-center">
+        <h1 className="font-montHeavy text-center text-[62px] capitalize leading-[60px] text-[#404040]">
           Can <span className="text-[#66C7C9]">AI</span> teach The world
         </h1>
-        <span className="font-montHeavy text-[24px] leading-[25px] text-[#6E808E]">
+        <span className="font-montHeavy my-5 text-[18px] md:text-[24px] leading-[25px] text-[#6E808E]">
           OIAI is committed democratise learning using AI technology and by giving to everyone a{" "}
           <Link as="url" href="https://www.youtube.com/watch?v=0eQ_rcOG0HU&t=664s">
             <span className="text-blue-300 underline">virtual teacher</span>
@@ -444,7 +601,7 @@ const AiTeach = () => {
         </span>
       </div>
       <div className="flex min-w-[30%] flex-col items-center justify-center">
-        <div className="grid grid-cols-3 justify-items-end gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-3 justify-items-end gap-2 md:gap-4">
           <div className="flex h-[120px] w-[120px] flex-col items-center justify-center rounded-[10px] bg-[#C2EFF0] text-center">
             <h1 className="font-montHeavy text-[38px] capitalize leading-[50px] text-[#66C7C9]">0 K</h1>
             <span className="font-montHeavy text-[14px] leading-[20px] text-[#6e808e]">Learners</span>
@@ -475,7 +632,7 @@ const AiTeach = () => {
 
 const Testimonials = () => {
   return (
-    <div className="justify-items relative top-[-10vh] z-[2] mx-auto mt-[10vh] grid h-auto min-h-[400px] w-[80%] grid-flow-row grid-cols-3 items-start gap-4  pt-[10vh]">
+    <div className="justify-items flex flex-row items-center justify-around flex-wrap gap-20  top-20 relative md:top-[-10vh] z-[2] mx-auto mt-[5] md:mt-[10vh] md:grid h-auto min-h-[20vh] md:min-h-[400px] w-[80%] md:grid-flow-row  md:grid-cols-3 md:items-start md:gap-4 md:pt-[10vh]">
       <div
         className="relative flex h-[344px]  min-w-[300px] max-w-[400px] flex-col items-start justify-center rounded-[20px]"
         style={{
@@ -542,15 +699,15 @@ const Testimonials = () => {
 
 const Footer = () => {
   return (
-    <div className="relative min-h-[600px] w-full gap-4 bg-[#83D5D6] px-5">
-      <div className="absolute left-10 top-[22vh] px-5">
+    <div className="relative min-h-[400px] md:min-h-[600px] w-full gap-4 bg-[#83D5D6] px-5">
+      <div className="absolute md:left-10 top-10 md:top-[22vh] md:px-5 flex flex-col items-center justify-center">
         <h1 className="font-montHeavy text-[82px] capitalize leading-[100px] text-white">OIAI</h1>
-        <span className="font-montHeavy w-[15%] text-center text-[18px] leading-[25px] text-white">
+        <span className="font-montHeavy w-full md:w-[15%] text-center text-[18px] leading-[25px] text-white">
           upskilling a generation using Artificial Intelligence
         </span>
       </div>
       {/* socials */}
-      <div className="absolute bottom-0 left-1/2 flex -translate-x-1/2 transform flex-col items-center justify-center py-10 text-center">
+      <div className="md:mt-0 mt-10 absolute bottom-0 left-1/2 flex -translate-x-1/2 flex-col items-center justify-center py-10 text-center">
         <div className="flex flex-row gap-5">
           <div className="max-h-[50px] max-w-[50px] cursor-pointer rounded-md bg-[#A1E2E3] p-[8px]">
             <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -700,7 +857,7 @@ const Footer = () => {
       </div>
 
       <div className="absolute bottom-0 right-0 w-auto">
-        <Image src={"/images/chatbot4.png"} alt="image" height={100} width={100} className="w-[405px]" />
+        <Image src={"/images/chatbot4.png"} alt="image" height={100} width={100} className="w-[100px] md:w-[405px]" />
       </div>
     </div>
   )
