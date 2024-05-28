@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 import { useAppContext } from "app/context/AppContext"
 import Link from "next/link"
 import { baseUrl } from "app/services/callapi"
+import WhereToSlider, { MobileTopSlider } from "components/Slider/slider"
 
 const Dashboard = () => {
   const { setDocumentData, setDocumentId, setFile, documentId } = useAppContext()
@@ -185,7 +186,7 @@ const Dashboard = () => {
                 </div>
                 {/* Mobile */}
                 <MobileTopSection/>
-                <div className="absolute bottom-[-4vh] md:bottom-[-25vh] mx-auto h-auto w-full">
+                <div className="absolute bottom-[-12vh] md:bottom-[-25vh] mx-auto h-auto w-full">
                   <div className="mx-auto flex h-[30vh] w-[80%] flex-col items-center gap-2 rounded-[20px] bg-[#66C7C9] p-2 md:w-[50%]">
                     <div className="h-full w-full rounded-[20px] bg-white p-2">
                       <div className="h-full w-full rounded-[20px] border-2 border-dashed border-[#66C7C9] bg-[#EDF0F3]">
@@ -289,19 +290,21 @@ export default Dashboard
 
 const MobileTopSection =()=>{
   return (
-    <div className="mt-20 flex flex-col items-center justify-around md:hidden">
-      <div className="block h-[10vh] w-full items-start justify-around px-5">
+    <div className="flex flex-col items-center justify-around md:hidden">
+      <MobileTopSlider />
+      <div className="hidden h-[10vh] w-full items-start justify-around px-5">
         <div className="float-left flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#66C7C9]">
           <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">
             1. Upload your PDF file which contains the content to teach
           </h1>
         </div>
         <div className="float-right mb-5 flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#C2EFF0]">
-          <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">2. Generate teaching content from PDF</h1>
+          <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">
+            2. Generate teaching content from PDF
+          </h1>
         </div>
       </div>
-
-      <div className="mt-10 block h-[10vh] w-full items-start justify-around px-5">
+      <div className="mt-10 hidden h-[10vh] w-full items-start justify-around px-5">
         <div className="float-left flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#66C7C9]">
           <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">
             3. Teach me will generate syllabus to teach
@@ -353,7 +356,7 @@ const BelowHeroSection = () => {
       </div>
       {/* how teach me works */}
       <div
-        className="relative top-[-10vh] z-[2] flex h-auto min-h-[700px] w-[100vw] flex-col items-center justify-center "
+        className="relative z-[2] mt-[-10vh] flex h-auto min-h-[700px] w-[100vw] flex-col items-center justify-center "
         style={{
           backgroundImage: `url('/images/bg1.svg')`,
           backgroundPosition: "center",
@@ -388,7 +391,7 @@ const BelowHeroSection = () => {
             <TeachMeText />
           </div>
         </div>
-        <div className="relative mt-[-12vh] w-full min-h-[60vh] md:h-auto">
+        <div className="relative mt-[-12vh] min-h-[60vh] w-full md:h-auto">
           <Image
             src="/images/shape3.svg"
             className="relative top-[40%] z-[1] min-h-[60vh] w-full"
@@ -413,7 +416,21 @@ const BelowHeroSection = () => {
         >
           <Testimonials />
         </div>
-        <div className="relative bottom-[-10vh] z-[6] h-full w-full">
+        <div
+          className="relative z-[1] min-h-[70vh] w-full md:pt-0 pt-20"
+          style={
+            {
+              // backgroundImage: `url('/images/shape3.svg')`,
+              // backgroundPosition: "center",
+              // backgroundColor: "transparent",
+              // backgroundRepeat: "no-repeat",
+              // backgroundSize: "100%",
+            }
+          }
+        >
+          <WhereTeachMeSection />
+        </div>
+        <div className="relative flex flex-col items-center w-full">
           <Footer />
         </div>
       </div>
@@ -422,9 +439,9 @@ const BelowHeroSection = () => {
 }
 const VideoPlayer = () => {
   return (
-    <div className="relative z-[6] flex min-h-[720px] w-[80%] flex-row items-center justify-center">
-      <div className="absolute z-[6] mx-auto mt-10 flex max-h-[720px] min-h-[690px] w-full  flex-row items-center justify-center rounded-[20px] bg-[#000000]">
-        <div className="h-auto w-auto cursor-pointer rounded-lg bg-[#272525be] p-3">
+    <div className="relative z-[6] flex min-h-[540px] md:min-h-[720px] w-[80%] flex-row items-center justify-center">
+      <div className="absolute z-[6] mx-auto mt-10 flex h-full w-full  flex-row items-center justify-center rounded-[20px] bg-[#000000]">
+        <div className="h-auto w-auto cursor-pointer rounded-lg p-3">
           <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M18.75 65.0012V25.0012C18.75 21.7028 18.75 20.0518 19.4441 19.0759C20.0499 18.2241 20.9836 17.6649 22.0203 17.5312C23.2076 17.3781 24.6638 18.1547 27.572 19.7058L65.072 39.7058L65.0856 39.7118C68.2996 41.4259 69.9073 42.2834 70.4347 43.4262C70.8948 44.4232 70.8948 45.574 70.4347 46.571C69.9066 47.7155 68.2951 48.5764 65.072 50.2954L27.572 70.2954C24.6617 71.8476 23.208 72.6212 22.0203 72.468C20.9836 72.3343 20.0499 71.7752 19.4441 70.9234C18.75 69.9475 18.75 68.2996 18.75 65.0012Z"
@@ -484,7 +501,7 @@ const FeatureCard1 = () => {
 const Player = () => {
   return (
     <>
-      <div className="absolute top-0 h-[594px] w-full">
+      <div className="absolute top-0 md:h-[594px] w-full">
         <div className="absolute left-[-65.1%] top-3 h-[594px] w-[100vw] pt-10">
           <Image
             src="/images/bg2.svg"
@@ -494,7 +511,7 @@ const Player = () => {
             className="object-fit mx-auto w-full bg-transparent"
           />
         </div>
-        <div className="absolute right-0 top-2 h-[594px] w-[100vw] pt-10">
+        <div className="absolute right-0 top-2h-[594px] w-[100vw] pt-10">
           <Image
             src="/images/bg2.svg"
             alt="img"
@@ -699,15 +716,15 @@ const Testimonials = () => {
 
 const Footer = () => {
   return (
-    <div className="relative min-h-[400px] md:min-h-[600px] w-full gap-4 bg-[#83D5D6] px-5">
-      <div className="absolute md:left-10 top-10 md:top-[22vh] md:px-5 flex flex-col items-center justify-center">
+    <div className="relative min-h-[400px] w-full gap-4 bg-[#83D5D6] px-5 md:min-h-[600px]">
+      <div className="absolute top-10 flex flex-col items-center justify-center md:left-10 md:top-[22vh] md:px-5">
         <h1 className="font-montHeavy text-[82px] capitalize leading-[100px] text-white">OIAI</h1>
-        <span className="font-montHeavy w-full md:w-[15%] text-center text-[18px] leading-[25px] text-white">
+        <span className="w-full text-center font-montHeavy text-[18px] leading-[25px] text-white md:w-[15%]">
           upskilling a generation using Artificial Intelligence
         </span>
       </div>
       {/* socials */}
-      <div className="md:mt-0 mt-10 absolute bottom-0 left-1/2 flex -translate-x-1/2 flex-col items-center justify-center py-10 text-center">
+      <div className="absolute bottom-0 left-1/2 mt-10 flex -translate-x-1/2 flex-col items-center justify-center py-10 text-center md:mt-0">
         <div className="flex flex-row gap-5">
           <div className="max-h-[50px] max-w-[50px] cursor-pointer rounded-md bg-[#A1E2E3] p-[8px]">
             <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -845,7 +862,7 @@ const Footer = () => {
             </svg>
           </div>
         </div>
-        <span className="font-montHeavy mt-5 text-[18px] leading-[25px] text-white">info@oiedu.co.uk </span>
+        <span className="mt-5 font-montHeavy text-[18px] leading-[25px] text-white">info@oiedu.co.uk </span>
         <br />
         <span className="font-montHeavy text-[18px] leading-[25px] text-white">
           ©{" "}
@@ -861,4 +878,28 @@ const Footer = () => {
       </div>
     </div>
   )
+}
+
+const WhereTeachMeSection =()=>{
+    const settings = {
+      className: "center",
+      centerMode: true,
+      infinite: true,
+      centerPadding: "60px",
+      slidesToShow: 3,
+      speed: 500,
+    }
+   return (
+     <>
+       <div className="relative z-[2] mt-5 flex flex-col pt-10 ">
+         <h1 className="my-6 text-center font-montHeavy text-[42px] leading-[60px] text-[#404040] md:text-[62px]">
+           Where &nbsp;
+           <span className="bg-gradient-to-r from-[#66C8C9] to-[#ACCEF4] bg-clip-text text-transparent">Teach Me</span>
+           <br /> Can be used?
+         </h1>
+       </div>
+       <WhereToSlider />
+       
+     </>
+   )
 }

@@ -30,3 +30,9 @@
     font-style: normal;
   }
 }
+
+.react-multi-carousel-item{
+}
+.awssld__content{
+  background-color: transparent !important;
+}
