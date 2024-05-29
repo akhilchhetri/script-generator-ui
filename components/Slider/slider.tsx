@@ -1,4 +1,3 @@
-import AwesomeSlider from "react-awesome-slider"
 import Carousel from "react-multi-carousel"
 import "react-multi-carousel/lib/styles.css"
 import "react-awesome-slider/dist/styles.css"
@@ -81,7 +80,7 @@ const WhereToSlider = () => {
             <h1 className="text-center font-montHeavy text-[43px] text-[#6E808E]">Work With an AI Teacher</h1>
             <span className="mx-auto w-[80%] text-center font-montHeavy text-[14px] leading-[20px] text-[#6E808E]">
               Be it clarifying doubts, or asking to rephrase concepts or practicing scenario based questions on what
-              your are learning, Teach Me's AI teacher has you covered in real-time.
+              your are learning, Teach Me&apos;s AI teacher has you covered in real-time.
             </span>
             <div className="absolute bottom-3 mx-auto w-full text-center"></div>
           </div>
@@ -107,7 +106,7 @@ const WhereToSlider = () => {
         <div
           className="relative z-[18] mx-auto flex h-[576px] min-w-[342px] max-w-[400px] cursor-pointer flex-col items-start justify-center rounded-[20px] px-10 transition delay-300 duration-300 ease-in-out hover:z-20 hover:scale-[1.05] hover:bg-[#6178C929]"
           style={{
-            backgroundColor: "##6178C929",
+            // backgroundColor: "##6178C929",
             boxShadow: "4px 4px 116px 0px rgba(97, 120, 201, 0.16), 2px 2px 16px 0px rgba(255, 255, 255, 0.08) inset",
             backdropFilter: "blur(16px)",
           }}
@@ -123,7 +122,7 @@ const WhereToSlider = () => {
         <div
           className="absolute right-20 top-[18px] mx-auto flex h-[576px] min-w-[342px] max-w-[400px]  rotate-3 cursor-pointer flex-col items-start justify-center rounded-[20px] transition delay-300 duration-300 ease-in-out hover:z-20 hover:rotate-6 hover:bg-[#6178C929]"
           style={{
-            backgroundColor: "##6178C929",
+            // backgroundColor: "##6178C929",
             boxShadow: "4px 4px 116px 0px rgba(97, 120, 201, 0.16), 2px 2px 16px 0px rgba(255, 255, 255, 0.08) inset",
             backdropFilter: "blur(16px)",
           }}
@@ -132,7 +131,7 @@ const WhereToSlider = () => {
           <h1 className="text-center font-montHeavy text-[43px] text-[#6E808E]">Work With an AI Teacher</h1>
           <span className="mx-auto w-[80%] text-center font-montHeavy text-[14px] leading-[20px] text-[#6E808E]">
             Be it clarifying doubts, or asking to rephrase concepts or practicing scenario based questions on what your
-            are learning, Teach Me's AI teacher has you covered in real-time.
+            are learning, Teach Me&&apos;s AI teacher has you covered in real-time.
           </span>
           <div className="absolute bottom-3 mx-auto w-full text-center"></div>
         </div>
