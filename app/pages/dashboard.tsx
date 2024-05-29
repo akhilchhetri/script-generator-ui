@@ -304,7 +304,7 @@ const MobileTopSection =()=>{
           </h1>
         </div>
       </div>
-      <div className="mt-10 hidden h-[10vh] w-full items-start justify-around px-5">
+      <div className="mt-10 hidden h-[10vh] w-full items-start justify-around md:px-5">
         <div className="float-left flex h-[50%] w-[70%] flex-col items-center justify-center rounded-[15px] border-[1px] border-white bg-[#66C7C9]">
           <h1 className="px-4 text-center text-[12px] font-[500] text-[#404040]">
             3. Teach me will generate syllabus to teach
@@ -719,7 +719,7 @@ const Footer = () => {
     <div className="relative min-h-[400px] w-full gap-4 bg-[#83D5D6] px-5 md:min-h-[600px]">
       <div className="absolute top-10 flex flex-col items-center justify-center md:left-10 md:top-[22vh] md:px-5">
         <h1 className="font-montHeavy text-[82px] capitalize leading-[100px] text-white">OIAI</h1>
-        <span className="w-full text-center font-montHeavy text-[18px] leading-[25px] text-white md:w-[15%]">
+        <span className="w-full text-center font-montHeavy text-[18px] leading-[25px] text-white md:w-[50%]">
           upskilling a generation using Artificial Intelligence
         </span>
       </div>
