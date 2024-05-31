@@ -6,6 +6,7 @@ import { useAppContext } from "app/context/AppContext"
 import Link from "next/link"
 import { baseUrl } from "app/services/callapi"
 import WhereToSlider, { MobileTopSlider } from "components/Slider/slider"
+import Loading from "components/Loader/Loading"
 
 const Dashboard = () => {
   const { setDocumentData, setDocumentId, setFile, documentId } = useAppContext()
@@ -49,9 +50,9 @@ const Dashboard = () => {
       }
 
       if (response) {
-        // Handle success
         setLoading(false)
       } else {
+        setLoading(false)
         console.error("File upload failed")
         // Handle error
       }
@@ -189,7 +190,12 @@ const Dashboard = () => {
                 <div className="absolute bottom-[-12vh] md:bottom-[-25vh] mx-auto h-auto w-full">
                   <div className="mx-auto flex h-[30vh] w-[80%] flex-col items-center gap-2 rounded-[20px] bg-[#66C7C9] p-2 md:w-[50%]">
                     <div className="h-full w-full rounded-[20px] bg-white p-2">
-                      <div className="h-full w-full rounded-[20px] border-2 border-dashed border-[#66C7C9] bg-[#EDF0F3]">
+                      {loading ?(
+                        <div className="flex flex-row items-center justify-center w-full h-full">
+                          <Loading text="Uploading PDF, Please wait !!!"/>
+                        </div>
+                      ):(
+ <div className="h-full w-full rounded-[20px] border-2 border-dashed border-[#66C7C9] bg-[#EDF0F3]">
                         <label
                           htmlFor="dropzone-file"
                           className="dark:hover:bg-bray-800 flex h-full w-full cursor-pointer flex-col items-center justify-center"
@@ -226,6 +232,8 @@ const Dashboard = () => {
                           <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} />
                         </label>
                       </div>
+                      )}
+                     
                     </div>
                   </div>
                 </div>
