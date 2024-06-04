@@ -19,6 +19,7 @@ const Dashboard = () => {
       handleFormSubmit(selectedFile)
     }
   }, [selectedFile])
+  
   const handleFileChange = async (e: any) => {
     setSelectedFile(undefined)
     setSelectedFile(e?.target.files[0])

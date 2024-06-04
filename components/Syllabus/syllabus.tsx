@@ -103,7 +103,7 @@ const Syllabus = () => {
   }
 
   return (
-    <div className="relative ml-3 flex flex-col items-start">
+    <div className="relative md:ml-3 flex flex-col items-start">
       <h1 className="hidden text-left text-[28px] font-[800] leading-[35.78px] text-[#404040] md:block">Syllabus</h1>
       {!loading && (
         <button
@@ -120,15 +120,34 @@ const Syllabus = () => {
           <>
             {tableOfContent?.map((each, index) => {
               return (
-                <div className="flex flex-row items-center gap-2 rounded-[20px] bg-white px-4 py-2" key={index}>
-                  <span className="h-6 w-6 rounded-full bg-[#66C7C9] text-center text-[16px] font-[800] text-[#FEFEFE]">
+                <div
+                  className="flex flex-row items-center justify-start gap-2 rounded-[20px] bg-white p-2 md:px-4"
+                  key={index}
+                >
+                  <span className="flex min-h-[25px] min-w-[25px] flex-row items-center justify-center rounded-full bg-[#66C7C9] text-center text-[14px] font-[800] text-[#FEFEFE] md:text-[16px]">
                     {index + 1}
                   </span>
                   {editId !== index && (
-                    <span className="text-left text-[16px] font-[800] text-[#404040]">
-                      {each?.name?.slice(0, 70)}
-                      {each?.name?.length > 69 ? " ..." : ""}
-                    </span>
+                    <div className="flex flex-col items-start overflow-hidden">
+                      <div className="text-wrap h-auto text-left text-[14px] font-[800] text-[#848181] md:text-[16px]">
+                        {each?.name?.slice(0, 70)}
+                        {each?.name?.length > 69 ? " ..." : ""}
+                      </div>
+                      {each?.subheadings && each?.subheadings?.length > 0 && (
+                        <div className="block">
+                          <span className="float-left font-montHeavy text-[12px] text-[#848181]">Keywords:</span>
+                          <div className="flex w-full flex-row flex-wrap items-center justify-start gap-1">
+                            {each?.subheadings?.map((subHeadings, index) => {
+                              return (
+                                <div key={index} className="flex flex-row items-center justify-center rounded-md bg-[#7b7b7b] px-2 text-white">
+                                  <span className="text-[12px]">{subHeadings}</span>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   )}
                   {edit && editId === index && (
                     <input
@@ -138,7 +157,7 @@ const Syllabus = () => {
                       key={index}
                     />
                   )}
-                  <div className="ml-4 flex flex-row gap-1 self-end">
+                  <div className="flex flex-row">
                     {editId !== index && (
                       <button
                         className=""
